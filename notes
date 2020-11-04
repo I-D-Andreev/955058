@@ -1,0 +1,36 @@
+1. Routes are defined in folder routes, file web.php
+
+2. php artisan make:model Animal -m 
+   creates app/Animal.php
+   creates  datetime_create_animals_table.php  -> this is the migrationt to edit
+
+3. php artisan tinker
+  to open the console, then you will need "use App\Animal";
+
+4. php artisan make::seeder AnimalTableSeeder
+  this will create seeder file AnimalTableSeeder
+  ! for this to run you will need to add it to DatabaseSeeder.php
+  can run with php artisan db:seed (but there is a better option below)
+
+5. php artisan make:factory AnimalFactory -m Animal
+  will create AnimalFactory.php
+  can use faker to ppulate fake data, or randomly choose from a list of predefined names
+
+ !Then the Seeder can call factory(App\Animal::class, 5)->create(); to call it 5 times
+
+6. To start over, you can use either:
+  php artisan migrate:reset
+  php artisan migrate
+  php artisan db:seed
+
+  OR
+! php artisan migrate:fresh --seed
+
+7. Query Builder
+   $cars = DB::table('cars')->where('age', '<', 5)->get();
+
+8. php artisan make:model Animal -mfs
+  creates a migration, a factory and a seeder
+
+!  php artisan make:model -a (or --all)
+  creates a migration, seeder, factory and resource controller 
