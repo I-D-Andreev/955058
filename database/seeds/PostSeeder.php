@@ -1,5 +1,6 @@
 <?php
 
+use App\Post;
 use Illuminate\Database\Seeder;
 
 class PostSeeder extends Seeder
@@ -11,6 +12,11 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $post = new Post;
+        $post->title = "How much does a corgi weigh?";
+        $post->text = "Did you know? Corgis weigh up to 14 kilograms! I am too lazy to write more so this is the end.";
+        $post->save();
+
+        factory(App\Post::class, 5)->create();
     }
 }

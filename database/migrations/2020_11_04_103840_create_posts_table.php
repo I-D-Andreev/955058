@@ -16,6 +16,16 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            
+            $table->string('title');
+            $table->string('text');
+            // "created_at" and "updated_at" are made automatically from timestamps()
+
+            // $table->unsignedInteger('user_id');
+
+            // $table->foreign('user_id')->references('id')->on('users')->
+            // onDelete('cascade')->onUpdate('cascade');
+
         });
     }
 
