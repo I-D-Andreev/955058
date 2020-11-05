@@ -16,6 +16,10 @@ class CreateCommentsTable extends Migration
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+
+            $table->string('text');
+            //author id
+            // many-to-many liked by, disliked by
         });
     }
 
