@@ -17,6 +17,6 @@ class CommentSeeder extends Seeder
         $comment->post_id = 1;
         $comment->save();
 
-        factory(App\Comment::class, 5)->create();
+        factory(App\Comment::class, 15)->create();
     }
 }
