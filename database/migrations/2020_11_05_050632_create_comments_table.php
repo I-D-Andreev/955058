@@ -23,7 +23,6 @@ class CreateCommentsTable extends Migration
             $table->foreign('post_id')->references('id')->
                 on('posts')->onDelete('cascade')->onUpdate('cascade');
             
-            // one to many with post
             // one to many with author/user
             // many-to-many with user liked by, disliked by
         });

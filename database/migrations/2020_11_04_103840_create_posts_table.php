@@ -20,12 +20,15 @@ class CreatePostsTable extends Migration
             $table->string('title');
             $table->string('text');
             // "created_at" and "updated_at" are made automatically from timestamps()
-
-            // $table->unsignedInteger('user_id');
+            
+            // $table->unsignedInteger('user_id')->nullable();
+            $table->unsignedInteger('user_id');
 
             // $table->foreign('user_id')->references('id')->on('users')->
-            // onDelete('cascade')->onUpdate('cascade');
+            //     onDelete('set null')->onUpdate('cascade');
 
+            $table->foreign('user_id')->references('id')->on('users')->
+                onDelete('cascade')->onUpdate('cascade');
         });
     }
 
