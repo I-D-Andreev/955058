@@ -18,8 +18,14 @@ class CreateCommentsTable extends Migration
             $table->timestamps();
 
             $table->string('text');
-            //author id
-            // many-to-many liked by, disliked by
+            $table->unsignedInteger('post_id');
+
+            $table->foreign('post_id')->references('id')->
+                on('posts')->onDelete('cascade')->onUpdate('cascade');
+            
+            // one to many with post
+            // one to many with author/user
+            // many-to-many with user liked by, disliked by
         });
     }
 
