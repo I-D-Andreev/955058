@@ -7,5 +7,14 @@
     <p>Author: {{$post->author->name}}</p>
     <br>
     <div>{{$post->text}}</div> 
+    <p>Comments:</p>
+    <ul>
+        @foreach ($post->comments as $comment)
+        <li>
+                {{$comment->text}}
+                {{$comment->author->name}}
+        </li>
+        @endforeach
+    </ul>
 
  @endsection
