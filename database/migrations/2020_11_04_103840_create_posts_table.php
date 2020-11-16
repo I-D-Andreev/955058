@@ -18,7 +18,7 @@ class CreatePostsTable extends Migration
             $table->timestamps();
             
             $table->string('title');
-            $table->string('text');
+            $table->longText('text');
             // "created_at" and "updated_at" are made automatically from timestamps()
 
             $table->unsignedInteger('user_id');
