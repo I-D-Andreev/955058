@@ -1,0 +1,12 @@
+@extends("layouts.base")
+
+@section("title", "Posts")
+
+@section("content")
+    <p>Posts:</p>
+    <ul>
+        @foreach($posts as $post)
+            <li>{{$post->title}}</li>
+        @endforeach
+    </ul> 
+ @endsection
