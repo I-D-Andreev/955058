@@ -34,3 +34,6 @@
 
 !  php artisan make:model -a (or --all)
   creates a migration, seeder, factory and resource controller 
+
+9. php artisan make:controller PostController --resource
+   resource creates methods for a resource
