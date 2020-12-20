@@ -9,6 +9,9 @@
     </ul> 
 
     <div>
+        <button type="button" class="btn btn-primary float-right mr-5">Create Post</button>
+    </div>
+    <div>
         {{ $posts->links() }}
     </div>
  @endsection
