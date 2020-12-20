@@ -14,10 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::any('/', function(){
-    return redirect()->route('posts');
+    return redirect()->route('posts.index');
 });
 
-Route::get('/posts', 'PostController@index')->name('posts');
+Route::get('/posts', 'PostController@index')->name('posts.index');
 
 Route::get('/posts/{id}', 'PostController@show')->name('posts.show');
 
