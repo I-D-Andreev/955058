@@ -1,6 +1,4 @@
-@extends("layouts.base")
-
-@section("title", "Posts")
+@extends("layouts.app")
 
 @section("content")
     <p>Posts:</p>
