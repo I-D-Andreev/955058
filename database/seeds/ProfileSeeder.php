@@ -16,5 +16,6 @@ class ProfileSeeder extends Seeder
         $profile->phone_number = '123-456-789';
         $profile->user_id = 1;
         $profile->save();
+        factory(Profile::class, 5)->create();
     }
 }

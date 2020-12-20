@@ -20,6 +20,8 @@ class UserSeeder extends Seeder
         $user->remember_token = 'random1234';
         $user->save();
         
-        factory(App\User::class, 5)->create();
+        
+        // factory(App\User::class, 5)->create();
+        // Users are created at time of Profile creation.
     }
 }
