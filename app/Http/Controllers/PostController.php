@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Post;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    /**
+     * Number of posts displayed per page.
+     */
+    private $postsPerPage = 15;
+
     /**
      * Require authentication to browse posts.
      */
@@ -23,7 +29,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::get();
+        $posts = DB::table('posts')->paginate($this->postsPerPage);
         return view('posts.index', ['posts'=> $posts]);
     }
 
