@@ -8,6 +8,15 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
+     * Require authentication to browse posts.
+     */
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
