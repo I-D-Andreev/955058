@@ -19,8 +19,10 @@ Route::any('/', function(){
 
 Route::get('/posts', 'PostController@index')->name('posts.index');
 
-Route::get('/posts/{id}', 'PostController@show')->name('posts.show');
+Route::get('/posts/create', 'PostController@create')->name('posts.create');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
+
+Route::get('/posts/{id}', 'PostController@show')->name('posts.show');

@@ -9,7 +9,7 @@
     </ul> 
 
     <div>
-        <button type="button" class="btn btn-primary float-right mr-5">Create Post</button>
+        <button type="button" class="btn btn-primary float-right mr-5" onclick="location.href='{{ route("posts.create")}}'">Create Post</button>
     </div>
     <div>
         {{ $posts->links() }}
