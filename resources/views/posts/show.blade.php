@@ -1,6 +1,5 @@
-@extends("layouts.base")
+@extends("layouts.app")
 
-@section("title", "Preview Post")
 
 @section("content")
     <h1>{{$post->title}}</h1>   
