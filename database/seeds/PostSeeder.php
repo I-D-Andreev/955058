@@ -19,6 +19,6 @@ class PostSeeder extends Seeder
         $post->user_id = 1;
         $post->save();
 
-        factory(App\Post::class, 100)->create();
+        factory(App\Post::class, 30)->create();
     }
 }

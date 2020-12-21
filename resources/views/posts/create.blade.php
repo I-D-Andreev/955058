@@ -2,7 +2,7 @@
 
 @push('imports')
     <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>  
-    <script src="{{ asset('js/ckeditor_trigger.js') }}" defer></script>  
+    <script src="{{ asset('js/ckeditor_trigger.js') }}"></script>  
 @endpush
 
 @section("content")

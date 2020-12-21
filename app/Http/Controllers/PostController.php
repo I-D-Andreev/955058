@@ -19,7 +19,7 @@ class PostController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('apiComments');
     }
 
 
@@ -111,5 +111,10 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+
+    public function apiComments($id){
+        return Post::findOrFail($id)->comments->load('author');
     }
 }
