@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use DB;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -51,7 +52,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            // 'title' => 'required|unique:posts|max:150',
+            'title' => 'required|max:150',
+            'text' => 'required',
+        ]);
+        
+        $post = new Post;
+        $post->title = $validatedData['title'];
+        $post->text = $validatedData['text'];
+        $post->user_id = Auth::id();
+        $post->save();
+        
+        return $this->show($post->id);
     }
 
     /**

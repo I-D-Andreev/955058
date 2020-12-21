@@ -7,7 +7,7 @@
 
 @section("content")
 <div class="card-body">
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('posts.store') }}">
         @csrf
         <div class="form-group row mb-1">
             <label for="title" class="col-md-12 col-form-label text-center">{{ __('Title') }}</label>
@@ -34,7 +34,7 @@
         <div class="form-group row h-50">
             <div id="ckedit_parent" class="col-md-6 offset-md-3">
                 {{-- <textarea name="text" id="text" class="ckeditor"></textarea> --}}
-                <textarea name="text" id="text" class="form-control w-100 h-100" required autocomplete="post-text"></textarea>
+                <textarea name="text" id="text" class="form-control w-100 h-100" style="resize:none" required autocomplete="post-text"></textarea>
             </div>
         </div>
 
