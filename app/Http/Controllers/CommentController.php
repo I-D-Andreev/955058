@@ -98,6 +98,8 @@ class CommentController extends Controller
     }
 
     public function apiCommentsCreate($post_id, Request $request){
+        // todo1: data validation
+        // todo1: authentication
         $comment = new Comment;
         $comment->text = $request['text'];
         $comment->post_id = $post_id;
