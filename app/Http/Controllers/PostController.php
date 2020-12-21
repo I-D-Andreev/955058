@@ -64,7 +64,7 @@ class PostController extends Controller
         $post->user_id = Auth::id();
         $post->save();
         
-        return $this->show($post->id);
+        return redirect()->route('posts.show', ['id'=>$post->id]);
     }
 
     /**
