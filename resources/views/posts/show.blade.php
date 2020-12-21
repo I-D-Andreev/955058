@@ -16,4 +16,8 @@
         @endforeach
     </ul>
 
+    <div>
+        <button type="button" class="btn btn-primary float-right mr-5" onclick="location.href='{{ route("posts.index")}}'">Back to Menu</button>
+    </div>
+
  @endsection
