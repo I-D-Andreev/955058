@@ -34,18 +34,28 @@
 
  @section('code')
     <script>
+        var token = "<?php echo (Auth::user())->api_token; ?>";
+        
         var init = new Vue({
             el: "#comments_root",
             data: {
+                config: {
+                    headers: {
+                        Authorization: 'Bearer ' + token,
+                        Accept: 'application/json'
+                    }
+                },
                 comments:[],
                 newComment: ''
             },
             methods: {
                 createComment: function(){
                     axios.post("{{ route('api.post.comments.create', ['id' => $post->id]) }}",
-                    {
-                        text: this.newComment
-                    })
+                        {
+                            text: this.newComment
+                        },
+                        this.config
+                    )
                     .then(response => {
                         console.log('in response');
                         this.comments.push(response.data);
@@ -57,7 +67,7 @@
                 }
             },
             mounted() {
-                axios.get("{{ route('api.post.comments', ['id' => $post->id])}}")
+                axios.get("{{ route('api.post.comments', ['id' => $post->id])}}", this.config)
                 .then(response => {
                     this.comments = response.data;
                 })
