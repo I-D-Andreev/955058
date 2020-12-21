@@ -10,14 +10,25 @@
     <p>Comments:</p>
 
     <div id="comments_root">
-        <ul>
-            <li v-for="comment in comments">@{{comment.text}} -- by -- @{{comment.author.name}}</li>
-        </ul>
+        <div id="comments_root">
+            <ul>
+                <li v-for="comment in comments">@{{comment.text}} -- by -- @{{comment.author.name}}</li>
+            </ul>
+        </div>
+
+        <div>
+            <button type="button" class="btn btn-primary float-right mr-5" onclick="location.href='{{ route("posts.index")}}'">Back to Menu</button>
+        </div>
+        
+
+        <div class="mt-5">
+            <div>
+                <label for="comment_text">Text:</label>
+                <input type="text" id="comment_text" v-model="newComment">
+                <button @click="createComment" >Comment</button>
+            </div>
+        </div>
     </div>
-    <div>
-        <button type="button" class="btn btn-primary float-right mr-5" onclick="location.href='{{ route("posts.index")}}'">Back to Menu</button>
-    </div>
-    
  @endsection
 
 
@@ -26,19 +37,35 @@
         var init = new Vue({
             el: "#comments_root",
             data: {
-                comments:["hello", "world"],
+                comments:[],
+                newComment: ''
+            },
+            methods: {
+                createComment: function(){
+                    axios.post("{{ route('api.post.comments.create', ['id' => $post->id]) }}",
+                    {
+                        text: this.newComment
+                    })
+                    .then(response => {
+                        console.log('in response');
+                        this.comments.push(response.data);
+                        this.newComment = '';
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                }
             },
             mounted() {
                 axios.get("{{ route('api.post.comments', ['id' => $post->id])}}")
                 .then(response => {
-                    console.log("Success");
                     this.comments = response.data;
                 })
                 .catch(err => {
-                    console.log("Error");
                     console.log(err);
                 })
             },
         });
     </script>
  @endsection
+

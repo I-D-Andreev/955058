@@ -2,11 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Post;
 use App\Comment;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
 {
+        /**
+     * Require authentication to browse posts.
+     */
+    public function __construct()
+    {
+        // $this->middleware('auth');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -81,5 +91,18 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         //
+    }
+
+    public function apiComments($post_id){
+        return Post::findOrFail($post_id)->comments->load('author');
+    }
+
+    public function apiCommentsCreate($post_id, Request $request){
+        $comment = new Comment;
+        $comment->text = $request['text'];
+        $comment->post_id = $post_id;
+        $comment->user_id = 1;
+        $comment->save();
+        return $comment->load('author');
     }
 }
