@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Post;
 use App\Comment;
+use App\User;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -99,11 +100,12 @@ class CommentController extends Controller
 
     public function apiCommentsCreate($post_id, Request $request){
         // todo1: data validation
-        // todo1: authentication
+        $token = $request->bearerToken();
+
         $comment = new Comment;
         $comment->text = $request['text'];
         $comment->post_id = $post_id;
-        $comment->user_id = 1;
+        $comment->user_id = User::where('api_token', $token)->first()->id;
         $comment->save();
         return $comment->load('author');
     }

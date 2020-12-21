@@ -57,7 +57,6 @@
                         this.config
                     )
                     .then(response => {
-                        console.log('in response');
                         this.comments.push(response.data);
                         this.newComment = '';
                     })
