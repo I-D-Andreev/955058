@@ -6,10 +6,10 @@
 @endpush
 
 @section("content")
-<div class="card-body">
+<div id="create" class="card-body">
     <form method="POST" action="{{ route('posts.store') }}">
         @csrf
-        <div class="form-group row mb-1">
+        <div class="form-group row m-0">
             <label for="title" class="col-md-12 col-form-label text-center">{{ __('Title') }}</label>
         </div>
 
@@ -26,8 +26,26 @@
             </div>
         </div>
 
+        <div class="form-group row m-0">
+            <label for="title" class="col-md-12 col-form-label text-center">{{ __('Tags') }}</label>
+        </div>
 
-        <div class="form-group row mb-1">
+        <div class="form-group row">
+            <div class="col-md-4 offset-md-4">
+                <input type="text" class="form-control" required>
+            </div>
+
+            <div class="ml-0 p-0 my-auto">
+                <i class="fas fa-plus-circle fa-2x"></i>
+            </div>
+
+            <div class="ml-1 p-0 my-auto">
+                <i class="fas fa-minus-circle fa-2x"></i>
+            </div>
+            
+        </div>
+
+        <div class="form-group row m-0">
             <label for="text" class="col-md-12 col-form-label text-center">{{ __('Text') }}</label>
         </div>
 
@@ -50,3 +68,33 @@
 </div>
 
 @endsection
+
+@section('code')
+    <script>
+        // var token = "<?php echo (Auth::user())->api_token; ?>";
+
+
+
+        var init = new Vue({
+            el: "#create",
+            data: {
+                config: {
+                    headers: {
+                        Authorization: 'Bearer ' + token,
+                        Accept: 'application/json'
+                    }
+                },
+                comments:[],
+                newComment: ''
+            },
+            methods: {
+                createComment: function(){
+            
+            },
+            mounted() {
+
+            },
+        });
+    </script>
+ @endsection
+
