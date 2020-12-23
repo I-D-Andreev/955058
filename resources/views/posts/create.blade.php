@@ -26,24 +26,25 @@
             </div>
         </div>
 
-        <div class="form-group row m-0">
-            <label for="title" class="col-md-12 col-form-label text-center">{{ __('Tags') }}</label>
-        </div>
-
         <div class="form-group row">
-            <div class="col-md-4 offset-md-4">
-                <input type="text" class="form-control" required>
+            <label class="col-md-2 offset-md-5 col-form-label text-center">{{ __('Tags') }}</label>
+            <div class="col-md-1 my-auto">
+                <i v-on:click="addRow" class="fas fa-plus-circle fa-2x"></i>
             </div>
+        </div>
+     
 
-            <div class="ml-0 p-0 my-auto">
-                <i class="fas fa-plus-circle fa-2x"></i>
+        <div class="form-group row" v-for="(row, index) in rows">
+            <div class="col-md-4 offset-md-4">
+                <input type="text" class="form-control" required v-model="rows[index]">
             </div>
 
             <div class="ml-1 p-0 my-auto">
-                <i class="fas fa-minus-circle fa-2x"></i>
+                <i v-on:click="removeRow(index)" class="fas fa-minus-circle fa-2x"></i>
             </div>
             
         </div>
+
 
         <div class="form-group row m-0">
             <label for="text" class="col-md-12 col-form-label text-center">{{ __('Text') }}</label>
@@ -71,28 +72,18 @@
 
 @section('code')
     <script>
-        // var token = "<?php echo (Auth::user())->api_token; ?>";
-
-
-
         var init = new Vue({
             el: "#create",
             data: {
-                config: {
-                    headers: {
-                        Authorization: 'Bearer ' + token,
-                        Accept: 'application/json'
-                    }
-                },
-                comments:[],
-                newComment: ''
+                rows : []
             },
             methods: {
-                createComment: function(){
-            
-            },
-            mounted() {
-
+                addRow: function() {
+                    this.rows.push("");
+                },
+                removeRow: function(index) {
+                    this.rows.splice(index, 1);
+                }
             },
         });
     </script>
