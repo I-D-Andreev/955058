@@ -2,6 +2,7 @@
 
 
 @section("content")
+    
     <h1>{{$post->title}}</h1>   
     <p>Author: {{$post->author->name}}</p>
     <br>
@@ -28,7 +29,8 @@
                 <button @click="createComment" >Comment</button>
             </div>
         </div>
-    </div>
+        </div>
+
  @endsection
 
 

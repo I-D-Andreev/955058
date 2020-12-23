@@ -12,7 +12,7 @@ class PostController extends Controller
     /**
      * Number of posts displayed per page.
      */
-    private $postsPerPage = 15;
+    private $postsPerPage = 10;
 
     /**
      * Require authentication to browse posts.
@@ -30,7 +30,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = DB::table('posts')->paginate($this->postsPerPage);
+        $posts = Post::paginate($this->postsPerPage);
         return view('posts.index', ['posts'=> $posts]);
     }
 
