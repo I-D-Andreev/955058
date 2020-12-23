@@ -25,48 +25,36 @@
         <hr class="w-100 mt-3 p-0 col-gray">
     </div>
 
-    <div class="card p-1 mt-1">
-        <h5 class="card-header">Leave a Comment:</h5>
-        <div class="card-body">
-          <form>
-              <textarea class="form-control" rows="3" style="resize: none"></textarea>
-              <button type="submit" class="btn btn-primary float-right mt-3">Submit</button>
-          </form>
-        </div>
-    </div>
-</div>
-    {{-- <h1>{{$post->title}}</h1>   
-    <p>Author: {{$post->author->name}}</p>
-    <br>
-    <div>{{$post->text}}</div> 
-    <hr>
-    <p>Comments:</p>
-
     <div id="comments_root">
-        <div id="comments_root">
-            <ul>
-                <li v-for="comment in comments">@{{comment.text}} -- by -- @{{comment.author.name}}</li>
-            </ul>
-        </div>
-
-        <div>
-            <button type="button" class="btn btn-primary float-right mr-5" onclick="location.href='{{ route("posts.index")}}'">Back to Menu</button>
-        </div>
-        
-
-        <div class="mt-5">
-            <div>
-                <label for="comment_text">Text:</label>
-                <input type="text" id="comment_text" v-model="newComment">
-                <button @click="createComment" >Comment</button>
+        <div class="card p-1 mt-1">
+            <div class="card-header">
+                <h5 class="h5 ml-2">Comments: <span class="badge badge-info float-right mr-2">@{{comments.length}}</span></h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-group borderless">
+                    <div class="list-group-item border-0" v-for="comment in comments">
+                        <div class="card">
+                            <div class="card-header">@{{comment.author.name}} <span class="float-right">@{{comment.updated_at}}</span></div>
+                            <div class="card-body">@{{comment.text}}</div>
+                        </div>
+                    </div>
+            </ul> 
             </div>
         </div>
-        </div> --}}
 
+    
+        <div class="card p-1 mt-1">
+            <h5 class="card-header">Leave a Comment:</h5>
+            <div class="card-body">
+                <textarea class="form-control" rows="3" style="resize: none" v-model="newComment"></textarea>
+                <button @click="createComment" class="btn btn-primary float-right mt-3">Submit</button>
+            </div>
+        </div> 
+    </div>
  @endsection
 
 
- {{-- @section('code')
+ @section('code')
     <script>
         var token = "<?php echo (Auth::user())->api_token; ?>";
         
@@ -111,4 +99,4 @@
         });
     </script>
  @endsection
- --}}
+
