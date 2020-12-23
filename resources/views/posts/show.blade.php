@@ -11,7 +11,16 @@
         <div class="w-100">
             <h1 class="ml-2">{{$post->title}}</h1>
         </div>
-        <p class="h4 ml-2 w-100 text-secondary"> by {{$post->author->name}}</p>
+        <div class="w-100">
+            <p class="h4 ml-2 w-100 text-secondary"> by {{$post->author->name}}</p>
+        </div>
+        <div class="w-100">
+            <h5>
+                @foreach ($post->tags as $tag)
+                    <span class="badge badge-primary">{{$tag->name}}</span>
+                @endforeach
+            </h5>
+        </div>
         <hr class="w-100 m-0 col-gray">
         <p class="h6 p-2 w-50 m-0"> Posted on: {{$post->created_at}}</p>
         <p class="h6 p-2 w-50 m-0 text-right"> Last updated: {{$post->updated_at}}</p>
