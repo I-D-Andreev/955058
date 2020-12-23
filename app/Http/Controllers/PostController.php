@@ -52,6 +52,8 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
+        
         $validatedData = $request->validate([
             // 'title' => 'required|unique:posts|max:150',
             'title' => 'required|max:150',

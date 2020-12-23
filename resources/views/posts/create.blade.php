@@ -36,7 +36,7 @@
 
         <div class="form-group row" v-for="(row, index) in rows">
             <div class="col-md-4 offset-md-4">
-                <input type="text" class="form-control" required v-model="rows[index]">
+                <input id="tags" name="tags[]" type="text" class="form-control" required v-model="rows[index]">
             </div>
 
             <div class="ml-1 p-0 my-auto">
