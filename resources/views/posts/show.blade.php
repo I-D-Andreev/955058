@@ -1,7 +1,8 @@
 @extends("layouts.app")
 
 @push('imports')
-<link href="{{ asset('css/colours.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/colours.css') }}" rel="stylesheet">
+    <script src="https://momentjs.com/downloads/moment.js"></script>
 @endpush
 
 @section("content")
@@ -34,7 +35,7 @@
                 <ul class="list-group borderless">
                     <div class="list-group-item border-0" v-for="comment in comments">
                         <div class="card">
-                            <div class="card-header">@{{comment.author.name}} <span class="float-right">@{{comment.updated_at}}</span></div>
+                            <div class="card-header">@{{comment.author.name}} <span class="float-right">@{{comment.updated_at | formatDate}}</span></div>
                             <div class="card-body">@{{comment.text}}</div>
                         </div>
                     </div>
@@ -43,7 +44,7 @@
         </div>
 
     
-        <div class="card p-1 mt-1">
+        <div class="card p-1 mt-3">
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
                 <textarea class="form-control" rows="3" style="resize: none" v-model="newComment"></textarea>
@@ -57,7 +58,12 @@
  @section('code')
     <script>
         var token = "<?php echo (Auth::user())->api_token; ?>";
-        
+        Vue.filter('formatDate', function(date){
+            if(date){
+                return moment(date).format('YYYY/MM/DD hh:mm:ss')
+            }
+        })
+
         var init = new Vue({
             el: "#comments_root",
             data: {
