@@ -54,10 +54,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
 
-        $validatedData = $request->validate([
-            'title' => 'required|max:150',
-            'text' => 'required',
-        ]);
+        $validatedData = $this->validateData($request);
 
         $post = new Post;
         $post->title = $validatedData['title'];
@@ -66,10 +63,7 @@ class PostController extends Controller
         $post->save();
 
         $tagNames = $request->input('tags', []);
-        foreach($tagNames as $tagName){
-            $tag = Tag::firstOrCreate(['name' => $tagName]);
-            $post->tags()->syncWithoutDetaching($tag->id);
-        }
+        $this->attachTags($post, $tagNames);
 
         return redirect()->route('posts.show', ['id'=>$post->id]);
     }
@@ -114,10 +108,7 @@ class PostController extends Controller
         }
 
 
-        $validatedData = $request->validate([
-            'title' => 'required|max:150',
-            'text' => 'required',
-        ]);
+        $validatedData = $this->validateData($request);
         
         $post->title = $validatedData['title'];
         $post->text = $validatedData['text'];
@@ -126,10 +117,7 @@ class PostController extends Controller
         $post->tags()->detach();
 
         $tagNames = $request->input('tags', []);
-        foreach($tagNames as $tagName){
-            $tag = Tag::firstOrCreate(['name' => $tagName]);
-            $post->tags()->syncWithoutDetaching($tag->id);
-        }
+        $this->attachTags($post, $tagNames);
 
         return redirect()->route('posts.show', ['id'=>$post->id]);
     }
@@ -143,5 +131,19 @@ class PostController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    private function attachTags(Post $post, $tagNames){
+        foreach($tagNames as $tagName){
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $post->tags()->syncWithoutDetaching($tag->id);
+        }
+    }
+
+    private function validateData(Request $request){
+        return $request->validate([
+            'title' => 'required|max:150',
+            'text' => 'required',
+        ]);
     }
 }
