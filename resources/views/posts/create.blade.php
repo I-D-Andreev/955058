@@ -53,7 +53,7 @@
         <div class="form-group row h-50">
             <div id="ckedit_parent" class="col-md-6 offset-md-3">
                 {{-- <textarea name="text" id="text" class="ckeditor"></textarea> --}}
-                <textarea name="text" id="text" class="form-control w-100 h-100" style="resize:none" required autocomplete="post-text"></textarea>
+                <textarea name="text" id="text" class="form-control w-100 h-100" style="resize:none" required autocomplete="on"></textarea>
             </div>
         </div>
 

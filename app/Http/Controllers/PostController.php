@@ -55,7 +55,6 @@ class PostController extends Controller
     {
 
         $validatedData = $request->validate([
-            // 'title' => 'required|unique:posts|max:150',
             'title' => 'required|max:150',
             'text' => 'required',
         ]);
@@ -108,7 +107,31 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        if($post->user_id != Auth::id()){
+            abort(403);
+        }
+
+
+        $validatedData = $request->validate([
+            'title' => 'required|max:150',
+            'text' => 'required',
+        ]);
+        
+        $post->title = $validatedData['title'];
+        $post->text = $validatedData['text'];
+        $post->save();
+
+        $post->tags()->detach();
+
+        $tagNames = $request->input('tags', []);
+        foreach($tagNames as $tagName){
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $post->tags()->syncWithoutDetaching($tag->id);
+        }
+
+        return redirect()->route('posts.show', ['id'=>$post->id]);
     }
 
     /**

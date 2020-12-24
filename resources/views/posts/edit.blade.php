@@ -7,16 +7,17 @@
 
 @section("content")
 <div id="create" class="card-body">
-    <form method="POST" action="{{ route('posts.store') }}">
+    <form method="POST" action="{{ route('posts.update', ['id' => $post->id]) }}">
         @csrf
+        @method('PUT')
+
         <div class="form-group row m-0">
             <label for="title" class="col-md-12 col-form-label text-center">{{ __('Title') }}</label>
         </div>
 
-        
         <div class="form-group row">
             <div class="col-md-4 offset-md-4">
-                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{ old('title') }}" required autocomplete="title" autofocus>
+                <input id="title" type="text" class="form-control @error('title') is-invalid @enderror" name="title" value="{{$post->title}}" required autocomplete="on" autofocus>
 
                 @error('title')
                     <span class="invalid-feedback" role="alert">
@@ -53,7 +54,7 @@
         <div class="form-group row h-50">
             <div id="ckedit_parent" class="col-md-6 offset-md-3">
                 {{-- <textarea name="text" id="text" class="ckeditor"></textarea> --}}
-                <textarea name="text" id="text" class="form-control w-100 h-100" style="resize:none" required autocomplete="post-text"></textarea>
+                <textarea name="text" id="text" class="form-control w-100 h-100" style="resize:none" required autocomplete="on">{{$post->text}}</textarea>
             </div>
         </div>
 
@@ -61,7 +62,7 @@
         <div class="form-group row mb-0">
             <div class="col-md-8 offset-2 text-right">
                 <button type="submit" class="btn btn-primary">
-                    Create Post
+                    Edit Post
                 </button>
             </div>
         </div>
@@ -72,10 +73,12 @@
 
 @section('code')
     <script>
+        var tags = (<?php echo $post->tags ?>).map(t=>t.name);
+        
         var init = new Vue({
             el: "#create",
             data: {
-                rows : []
+                rows : tags
             },
             methods: {
                 addRow: function() {
