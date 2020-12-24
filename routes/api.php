@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('comments/{id}', 'CommentController@apiComments')->name('api.post.comments');
-Route::post('comments/{id}', 'CommentController@apiCommentsCreate')->name('api.post.comments.create');
-
+Route::post('comments/{id}', 'CommentController@apiCommentCreate')->name('api.post.comment.create');
+Route::put('comments/{id}', 'CommentController@apiCommentUpdate')->name('api.post.comment.update');
 
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {

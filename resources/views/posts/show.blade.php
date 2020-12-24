@@ -54,10 +54,16 @@
                         
                         <div class="card">
                             <div class="card-header">@{{comment.author.name}} 
-                                <i v-if="comment.author.id === {{Auth::id()}}" class="far fa-edit ml-2" @click="editComment(comment, index)"></i>
+                                <i v-if="comment.author.id === {{Auth::id()}}" class="far fa-edit ml-2" @click="commentEditArea(comment, index)"></i>
                                 <span class="float-right">@{{comment.updated_at | formatDate}}</span>
                             </div>
-                            <div :contenteditable="(commentToEdit === comment.id) ? true: false" class="card-body" name="commentArea">@{{comment.text}}</div>
+                            <div :contenteditable="(commentToEdit === comment.id) ? true: false" class="card-body" name="commentArea">@{{comment.text}}
+                                <i v-if="comment.created_at != comment.updated_at">(Edited)</i>
+                            </div>
+                            
+                        </div>
+                        <div v-if="(commentToEdit === comment.id)" class="w-100">
+                            <button class="btn btn-primary float-right mt-1" @click="editComment(comment, index)">Edit Comment</button>
                         </div>
                     </div>
             </ul> 
@@ -97,11 +103,10 @@
                 comments:[],
                 newComment: '',
                 commentToEdit: null,
-                commentEditText: "",
             },
             methods: {
                 createComment: function(){
-                    axios.post("{{ route('api.post.comments.create', ['id' => $post->id]) }}",
+                    axios.post("{{ route('api.post.comment.create', ['id' => $post->id]) }}",
                         {
                             text: this.newComment
                         },
@@ -115,12 +120,9 @@
                         console.log(err);
                     })
                 }, 
-                editComment: function(comment, commentAreaIndex){
-                    console.log(comment);
-                    console.log(commentAreaIndex);
-                    
+                commentEditArea: function(comment, commentAreaIndex){  
                     this.commentToEdit = comment.id;
-                    var commentArea = document.getElementsByName("commentArea")[commentAreaIndex]
+                    let commentArea = document.getElementsByName("commentArea")[commentAreaIndex]
                     
                     // Set editable explicitly so we don't have race condition between vue and the focus line.
                     // commentToEdit is still needed to automatically get 
@@ -134,6 +136,26 @@
                     document.getSelection().collapseToEnd();
 
                 },
+                editComment: function(comment, commentAreaIndex){
+                    let commentArea = document.getElementsByName("commentArea")[commentAreaIndex]
+                    let url = "{{ route('api.post.comment.update', ['id' => ':id']) }}";
+                    url = url.replace(':id', comment.id);
+                   
+                    axios.put(url,
+                        {
+                            text: commentArea.textContent
+                        }, 
+                        this.config
+                    )
+                    .then(response => {
+                        this.comments[commentAreaIndex] = response.data;
+                        this.commentToEdit = '';
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+                },
+
             },
             mounted() {
                 axios.get("{{ route('api.post.comments', ['id' => $post->id])}}", this.config)
