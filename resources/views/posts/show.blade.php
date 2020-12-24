@@ -14,7 +14,7 @@
         
         @if (Auth::id() == $post->user_id)
             <div class="w-50 my-auto">
-                <button class="btn btn-primary float-right mr-3">Edit Post</button>
+                <button class="btn btn-primary float-right mr-3" onclick="location.href='{{ route("posts.edit", ["id" => $post->id])}}'">Edit Post</button>
             </div>
         @endif
 
