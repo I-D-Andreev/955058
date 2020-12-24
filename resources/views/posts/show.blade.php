@@ -50,13 +50,14 @@
             </div>
             <div class="card-body">
                 <ul class="list-group borderless">
-                    <div class="list-group-item border-0" v-for="comment in comments">
+                    <div class="list-group-item border-0" v-for="(comment, index) in comments">
+                        
                         <div class="card">
                             <div class="card-header">@{{comment.author.name}} 
-                                <i v-if="comment.author.id === {{Auth::id()}}" class="far fa-edit ml-2"></i>
+                                <i v-if="comment.author.id === {{Auth::id()}}" class="far fa-edit ml-2" @click="editComment(comment, index)"></i>
                                 <span class="float-right">@{{comment.updated_at | formatDate}}</span>
                             </div>
-                            <div class="card-body">@{{comment.text}}</div>
+                            <div :contenteditable="(commentToEdit === comment.id) ? true: false" class="card-body" name="commentArea">@{{comment.text}}</div>
                         </div>
                     </div>
             </ul> 
@@ -94,7 +95,9 @@
                     }
                 },
                 comments:[],
-                newComment: ''
+                newComment: '',
+                commentToEdit: null,
+                commentEditText: "",
             },
             methods: {
                 createComment: function(){
@@ -111,7 +114,26 @@
                     .catch(err => {
                         console.log(err);
                     })
-                }
+                }, 
+                editComment: function(comment, commentAreaIndex){
+                    console.log(comment);
+                    console.log(commentAreaIndex);
+                    
+                    this.commentToEdit = comment.id;
+                    var commentArea = document.getElementsByName("commentArea")[commentAreaIndex]
+                    
+                    // Set editable explicitly so we don't have race condition between vue and the focus line.
+                    // commentToEdit is still needed to automatically get 
+                    // the commentAreas back to non-editable once we stop editing.
+
+                    commentArea.contentEditable = true;
+                    commentArea.focus();
+
+                    // move cursor to the end of the comment
+                    document.execCommand("selectAll", false, null);
+                    document.getSelection().collapseToEnd();
+
+                },
             },
             mounted() {
                 axios.get("{{ route('api.post.comments', ['id' => $post->id])}}", this.config)
