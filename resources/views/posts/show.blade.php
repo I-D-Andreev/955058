@@ -36,6 +36,7 @@
     </div>
     <div class="mt-2">
         {{$post->text}}
+        {{Auth::id()}}
     </div>
 
     <div class="row">
@@ -51,7 +52,10 @@
                 <ul class="list-group borderless">
                     <div class="list-group-item border-0" v-for="comment in comments">
                         <div class="card">
-                            <div class="card-header">@{{comment.author.name}} <span class="float-right">@{{comment.updated_at | formatDate}}</span></div>
+                            <div class="card-header">@{{comment.author.name}} 
+                                <span v-if="comment.author.id === {{Auth::id()}}">(Me)</span>
+                                <span class="float-right">@{{comment.updated_at | formatDate}}</span>
+                            </div>
                             <div class="card-body">@{{comment.text}}</div>
                         </div>
                     </div>
