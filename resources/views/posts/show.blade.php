@@ -8,9 +8,16 @@
 @section("content")
 <div class="container h-100">
     <div class="row">
-        <div class="w-100">
+        <div class="w-50">
             <h1 class="ml-2">{{$post->title}}</h1>
         </div>
+        
+        @if (Auth::id() == $post->user_id)
+            <div class="w-50 my-auto">
+                <button class="btn btn-primary float-right mr-3">Edit Post</button>
+            </div>
+        @endif
+
         <div class="w-100">
             <p class="h4 ml-2 w-100 text-secondary"> by {{$post->author->name}}</p>
         </div>
