@@ -53,7 +53,7 @@
                     <div class="list-group-item border-0" v-for="comment in comments">
                         <div class="card">
                             <div class="card-header">@{{comment.author.name}} 
-                                <span v-if="comment.author.id === {{Auth::id()}}">(Me)</span>
+                                <i v-if="comment.author.id === {{Auth::id()}}" class="far fa-edit ml-2"></i>
                                 <span class="float-right">@{{comment.updated_at | formatDate}}</span>
                             </div>
                             <div class="card-body">@{{comment.text}}</div>
