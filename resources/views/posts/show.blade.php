@@ -35,8 +35,7 @@
     
     </div>
     <div class="mt-2">
-        {{$post->text}}
-        {{Auth::id()}}
+        {!! $post->text !!}
     </div>
 
     <div class="row">
