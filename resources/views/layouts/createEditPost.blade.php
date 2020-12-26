@@ -54,7 +54,7 @@
 
         <div class="form-group row h-50">
                 <div id="ckeditParent" class="col-md-6 offset-md-3" style="height: 400px">
-                    <textarea id="ckeditorTextArea" name="ckeditorTextArea" class="ckeditor"></textarea>
+                    <textarea id="text" name="text" class="ckeditor">@yield("text")</textarea>
                 
                     <button type="submit" class="btn btn-primary mt-2 float-right">
                         @yield("buttonName", "")
