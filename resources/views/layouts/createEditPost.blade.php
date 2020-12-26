@@ -54,8 +54,14 @@
 
         <div class="form-group row h-50">
                 <div id="ckeditParent" class="col-md-6 offset-md-3" style="height: 400px">
-                    <textarea id="text" name="text" class="ckeditor">@yield("text")</textarea>
-                
+                    <textarea id="text" name="text" class="ckeditor @error('text') is-invalid @enderror">@yield("text")</textarea>
+                    
+                    @error('text')
+                        <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                        </span>
+                    @enderror
+
                     <button type="submit" class="btn btn-primary mt-2 float-right">
                         @yield("buttonName", "")
                     </button>
