@@ -2,7 +2,7 @@
 
 @push('imports')
     <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>  
-    <script src="{{ asset('js/ckeditor_trigger.js') }}"></script>  
+    <script src="{{ asset('js/ckeditorTrigger.js') }}"></script>  
 @endpush
 
 @section("content")
@@ -53,20 +53,15 @@
         </div>
 
         <div class="form-group row h-50">
-            <div id="ckedit_parent" class="col-md-6 offset-md-3">
-                {{-- <textarea name="text" id="text" class="ckeditor"></textarea> --}}
-                <textarea name="text" id="text" class="form-control w-100 h-100" style="resize:none" required autocomplete="on">@yield("text")</textarea>
-            </div>
+                <div id="ckeditParent" class="col-md-6 offset-md-3" style="height: 400px">
+                    <textarea id="ckeditorTextArea" name="ckeditorTextArea" class="ckeditor"></textarea>
+                
+                    <button type="submit" class="btn btn-primary mt-2 float-right">
+                        @yield("buttonName", "")
+                    </button>
+                </div>
         </div>
 
-
-        <div class="form-group row mb-0">
-            <div class="col-md-8 offset-2 text-right">
-                <button type="submit" class="btn btn-primary">
-                    @yield("buttonName", "")
-                </button>
-            </div>
-        </div>
     </form>
 </div>
 
