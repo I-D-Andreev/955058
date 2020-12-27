@@ -51,6 +51,6 @@ class User extends Authenticatable
     }
 
     public function isAdmin(){
-        return $this->type === UserTypes::$admin;
+        return ($this->type === UserTypes::$admin)? true : false;
     }
 }

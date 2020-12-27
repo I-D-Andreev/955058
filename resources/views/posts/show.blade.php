@@ -32,12 +32,12 @@
         <p class="h6 p-2 w-50 m-0"> Posted on: {{$post->created_at}}</p>
         <p class="h6 p-2 w-50 m-0 text-right"> Last updated: {{$post->updated_at}}</p>
         <hr class="w-100 m-0 p-0 col-gray">
-    
     </div>
+   
     <div class="mt-2">
         {!! $post->text !!}
     </div>
-
+    
     <div class="row">
         <hr class="w-100 mt-3 p-0 col-gray">
     </div>
@@ -45,7 +45,7 @@
     <div id="comments_root">
         <div class="card p-1 mt-1">
             <div class="card-header">
-                <h5 class="h5 ml-2">Comments: <span class="badge badge-info float-right mr-2">@{{comments.length}}</span></h5>
+                <h5 class="h5 ml-2">Comments:<span class="badge badge-info float-right mr-2">@{{comments.length}}</span></h5>
             </div>
             <div class="card-body">
                 <ul class="list-group borderless">
@@ -53,7 +53,7 @@
                         
                         <div class="card">
                             <div class="card-header">@{{comment.author.name}} 
-                                <i v-if="comment.author.id === {{Auth::id()}} || {{Auth::user()->isAdmin()}}" class="far fa-edit ml-2" @click="commentEditArea(comment, index)"></i>
+                                <i v-if="comment.author.id==={{Auth::id()}} || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(comment, index)"></i>
                                 <span class="float-right">@{{comment.updated_at | formatDate}}</span>
                             </div>
                             <div :contenteditable="(commentToEdit === comment.id) ? true: false" class="card-body" name="commentArea">@{{comment.text}}

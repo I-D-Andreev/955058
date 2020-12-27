@@ -6,6 +6,7 @@ use App\Post;
 use App\Comment;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
@@ -118,7 +119,7 @@ class CommentController extends Controller
         $token = $request->bearerToken();
         $sender = User::where('api_token', $token)->first();
 
-        if($comment->author->id != $sender->id){
+        if(Gate::forUser($sender)->denies('api-update-comment', $comment)){
             abort(403);
         }
 
