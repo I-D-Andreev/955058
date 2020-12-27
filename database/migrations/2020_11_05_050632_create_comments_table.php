@@ -18,6 +18,7 @@ class CreateCommentsTable extends Migration
             $table->timestamps();
 
             $table->longText('text');
+            $table->boolean('editable_by_user')->default(true);
 
             $table->unsignedInteger('post_id');
             $table->foreign('post_id')->references('id')->

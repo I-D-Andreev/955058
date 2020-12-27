@@ -26,7 +26,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Gate::define('api-update-comment', function($user, $comment){
-            return ($user->id === $comment->author->id) || $user->isAdmin();
+            return ($user->id === $comment->author->id && $comment->editable_by_user == true) || $user->isAdmin();
         });
     }
 }
