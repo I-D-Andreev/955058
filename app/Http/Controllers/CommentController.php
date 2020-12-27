@@ -124,6 +124,12 @@ class CommentController extends Controller
         }
 
         $comment->text = $request['text'];
+
+        // A comment modified by an admin will not be changeable by the user anymore.
+        if($sender->isAdmin()){
+            $comment->editable_by_user = false;
+        }
+
         $comment->save();
         return $comment->load('author');
     }
