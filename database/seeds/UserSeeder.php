@@ -19,6 +19,7 @@ class UserSeeder extends Seeder
         $user->password = 'A456123AA@';
         $user->remember_token = 'random1234';
         $user->api_token = Str::random(60);
+        $user->type="user";
         $user->save();
         
         
