@@ -2,7 +2,6 @@
 
 @push('imports')
     <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>  
-    <script src="{{ asset('js/ckeditorTrigger.js') }}"></script>  
 @endpush
 
 @section("content")
@@ -54,7 +53,7 @@
 
         <div class="form-group row h-50">
                 <div id="ckeditParent" class="col-md-6 offset-md-3" style="height: 400px">
-                    <textarea id="text" name="text" class="ckeditor @error('text') is-invalid @enderror">@yield("text")</textarea>
+                    <textarea id="text" name="text" class="@error('text') is-invalid @enderror">@yield("text")</textarea>
                     
                     @error('text')
                         <span class="invalid-feedback" role="alert">
@@ -67,8 +66,8 @@
                     </button>
                 </div>
         </div>
-
     </form>
+   
 </div>
 
 @endsection
@@ -92,6 +91,18 @@
                     this.rows.splice(index, 1);
                 }
             },
+        });
+    </script>
+
+    <script>
+        $(function() {
+            CKEDITOR.replace('text', {
+                resize_enabled: false,
+                height: "70%",
+                image_previewText: " ",
+                filebrowserUploadUrl: "{{route('posts.image.store', ['_token' => csrf_token() ])}}",
+                filebrowserUploadMethod: 'form',
+            });
         });
     </script>
  @endsection

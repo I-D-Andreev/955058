@@ -133,6 +133,27 @@ class PostController extends Controller
         //
     }
 
+    public function uploadImage(Request $request){
+        if($request->hasFile('upload')) {
+            $saveFolder = "images";
+
+            $originalFullName = $request->file('upload')->getClientOriginalName();
+            
+            $replaceCharacters = [" ", "/", "\\"];
+            $fileName = str_replace($replaceCharacters, "", pathinfo($originalFullName, PATHINFO_FILENAME));
+            $fileExtension = pathinfo($originalFullName, PATHINFO_EXTENSION);
+            
+            $safeFileName = $fileName.'_'.time().'.'.$fileExtension;
+            $request->file('upload')->move(public_path($saveFolder), $safeFileName);
+
+
+            $CKEditorFuncNum = $request->input('CKEditorFuncNum');
+            $url = asset($saveFolder.'/'.$safeFileName); 
+
+            echo "<script> window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url')</script>";
+        }
+    }
+
     private function attachTags(Post $post, $tagNames){
         foreach($tagNames as $tagName){
             $tag = Tag::firstOrCreate(['name' => $tagName]);
