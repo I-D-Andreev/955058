@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form id="registerForm" method="POST" action="{{ route('register') }}">
                         @csrf
 
                         <div class="form-group row">
@@ -62,22 +62,34 @@
                         </div>
 
                         <div class="form-group row">
-                            <label for="phone_number" class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
+                            <label for="phoneNumber" class="col-md-4 col-form-label text-md-right">{{ __('Phone Number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="phone_number" type="text" class="form-control @error('phone_number') is-invalid @enderror" name="phone_number" value="{{ old('phone_number') }}" required autocomplete="phone_number" autofocus>
+                                <input id="phoneNumber" type="text" class="form-control @error('phoneNumber') is-invalid @enderror" name="phoneNumber" value="{{ old('phoneNumber') }}" required autocomplete="phoneNumber" autofocus>
 
-                                @error('phone_number')
+                                @error('phoneNumber')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
                             </div>
                         </div>
-
+                        
+                        @inject('userTypes', 'App\UserTypes')
+                        <div class="form-group row">
+                            <label for="accountType" class="col-md-4 col-form-label text-md-right">{{ __('Account Type') }}</label>
+                            <div class="col-md-6">
+                                <select name="accountType" id="accountType" class="form-control" style="text-align-last: center; text-align-last: center">
+                                    @foreach ($userTypes::allTypes() as $type)
+                                        <option value={{$type}} class="text-center">{{$type}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                      
                         <div class="form-group row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary float-right">
                                     {{ __('Register') }}
                                 </button>
                             </div>

@@ -5,12 +5,14 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
+use App\UserTypes;
 use App\Profile;
 use DB;
 use Illuminate\Support\Str;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
@@ -56,7 +58,8 @@ class RegisterController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-            'phone_number' => ['required', 'string', 'min:10']
+            'phoneNumber' => ['required', 'string', 'min:10'],
+            'accountType' => ['required', Rule::in(UserTypes::allTypes())],
         ]);
     }
 
@@ -68,15 +71,17 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     { 
+
         $user = new User([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'api_token' => Str::random(60),
+            'type' => $data['accountType']
         ]);
 
         $profile = new Profile;
-        $profile->phone_number = $data['phone_number'];
+        $profile->phone_number = $data['phoneNumber'];
 
         DB::transaction(function() use($user, $profile) {
             $user->save();
