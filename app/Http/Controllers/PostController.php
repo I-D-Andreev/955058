@@ -169,11 +169,4 @@ class PostController extends Controller
             'text' => 'required',
         ]);
     }
-
-
-    // testing
-    public function notifyUser($id){
-        $user = User::findOrFail($id);
-        $user->notify(new NewComment("hello world2222"));
-    }
 }

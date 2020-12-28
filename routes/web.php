@@ -18,9 +18,6 @@ Route::any('/', function(){
 });
 
 
-
-Route::get('/notifyUser/{id}', 'PostController@notifyUser')->name('posts.notifyuser');
-
 Route::get('/posts', 'PostController@index')->name('posts.index');
 Route::get('/posts/create', 'PostController@create')->name('posts.create');
 Route::post('/posts', 'PostController@store')->name('posts.store');
