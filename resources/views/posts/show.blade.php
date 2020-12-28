@@ -42,7 +42,7 @@
         <hr class="w-100 mt-3 p-0 col-gray">
     </div>
 
-    <div id="comments_root">
+    <div id="commentsRoot">
         <div class="card p-1 mt-1">
             <div class="card-header">
                 <h5 class="h5 ml-2">Comments:<span class="badge badge-info float-right mr-2">@{{comments.length}}</span></h5>
@@ -85,6 +85,7 @@
  @section('code')
     <script>
         var token = "<?php echo (Auth::user())->api_token; ?>";
+
         Vue.filter('formatDate', function(date){
             if(date){
                 return moment(date).format('YYYY/MM/DD HH:mm:ss')
@@ -92,7 +93,7 @@
         })
 
         var init = new Vue({
-            el: "#comments_root",
+            el: "#commentsRoot",
             data: {
                 config: {
                     headers: {

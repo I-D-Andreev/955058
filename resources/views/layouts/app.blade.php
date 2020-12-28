@@ -21,14 +21,16 @@
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+            
             <div class="container">
+                
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-
+                
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
@@ -47,12 +49,14 @@
                                 </li>
                             @endif
                         @else
+                      
                             <li class="nav-item dropdown">
-                                <a id="notificationDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    Notifications
-                                    <span class="badge badge-info">100</span>
-                                </a>
 
+                                <div class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Notifications
+                                    <span class="badge badge-info">@{{notifications.length}}</span>
+                                </div>
+                                
                                 <div class="dropdown-menu">
                                     <div class="dropdown-item">
                                         <a href="#" >Mark all as read</a>
@@ -60,17 +64,10 @@
                                 
                                     <div class="dropdown-divider"></div>
 
-                                    <div class="dropdown-item">
-                                        Hello world 1
-                                    </div>
-
-                                    <div class="dropdown-item">
-                                        Hello world 2
-                                    </div>
-
-                                    <div class="dropdown-item">
-                                        Hello world 3
-                                    </div>
+                                   <div v-for="notification in notifications">
+                                        <div class="dropdown-item">
+                                            @{{notification.text}}
+                                        </div>
                             </li>
 
                             <li class="nav-item">
@@ -108,17 +105,26 @@
 
     <script src="{{ asset('js/app.js') }}"></script>   
     @stack('imports')
-    @yield('code')
 
     <script>
         var userId = <?php echo Auth::id(); ?>;
-        console.log(`App.User.${userId}`);
+        
+        var vapp = new Vue({
+            el: "#app",
+            data: {
+                notifications:[],
+            },
+        });        
 
         window.Echo.private(`App.User.${userId}`)
             .notification((notification) => {
                 console.log(notification);
+                vapp.notifications.push(notification);
             });
     </script>
+
+    @yield('code')
+
 
 </body>
 </html>
