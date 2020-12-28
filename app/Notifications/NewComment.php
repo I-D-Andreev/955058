@@ -2,6 +2,8 @@
 
 namespace App\Notifications;
 
+use App\Comment;
+
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -11,16 +13,18 @@ class NewComment extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    public $message;
+    private $MAX_NOTIFICATION_LENGTH = 50;
+
+    public Comment $comment;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($m)
+    public function __construct(Comment $comment)
     {
-        $this->message = $m;
+        $this->comment = $comment;
     }
 
     /**
@@ -31,15 +35,23 @@ class NewComment extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        // dd($notifiable);
         return ['broadcast'];
     }
     
     public function toArray($notifiable){
-        // dd("toArray");
-        // dd($notifiable);
-        return ['text' => "hello world1111", 'text2' => 'hiya'];
+        $post = $this->comment->post;
+        $title = 'New comment in '.$post->title.'!';
+        return [
+            "title" => $this->reduceString($title),
+            'text' => $this->reduceString($this->comment->text),
+            'commenter' => $this->reduceString($this->comment->author->name),
+        ];
     }
     
+    private function reduceString($text){
+        return (strlen($text) < $this->MAX_NOTIFICATION_LENGTH) ? 
+            $text: 
+            substr($text, 0, $this->MAX_NOTIFICATION_LENGTH).'...';
+    }
    
 }

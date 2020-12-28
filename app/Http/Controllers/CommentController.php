@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Post;
 use App\Comment;
 use App\User;
+use App\Notifications\NewComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -132,5 +133,12 @@ class CommentController extends Controller
 
         $comment->save();
         return $comment->load('author');
+    }
+
+    public function apiNotifyNewComment(Request $request){
+        $commentId = $request["commentId"];
+        $comment = Comment::findOrFail($commentId);
+        $postAuthor = $comment->post->author;
+        $postAuthor->notify(new NewComment($comment));
     }
 }
