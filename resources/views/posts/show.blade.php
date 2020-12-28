@@ -57,7 +57,7 @@
                                 <span class="float-right">@{{comment.updated_at | formatDate}}</span>
                                 <span v-if="comment.created_at != comment.updated_at" class="float-right mr-3">
                                     <i v-if="comment.editable_by_user==='1'">(Edited)</i>
-                                    <i v-else class="text-danger">(Edited by Admin)</i>
+                                    <i v-else class="text-danger">(Moderated by Admin)</i>
                                 </span>
                             </div>
                             <div :contenteditable="(commentToEdit === comment.id) ? true: false" class="card-body" name="commentArea">@{{comment.text}}</div>
