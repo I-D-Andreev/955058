@@ -13,7 +13,7 @@ class NewComment extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    private $MAX_NOTIFICATION_LENGTH = 50;
+    private $MAX_NOTIFICATION_LENGTH = 35;
 
     public Comment $comment;
 

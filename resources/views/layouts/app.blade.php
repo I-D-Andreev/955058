@@ -59,16 +59,24 @@
                                 
                                 <div class="dropdown-menu">
                                     <div class="dropdown-item">
-                                        <a href="#" >Mark all as read</a>
+                                        <a href="#" class="w-100 text-center">Mark all as read</a>
                                     </div>
                                 
                                     <div class="dropdown-divider"></div>
 
                                    <div v-for="notification in notifications">
                                         <div class="dropdown-item">
-                                            <p>@{{notification.title}}</p>
-                                            <p>@{{notification.text}}</>
-                                            <p>@{{notification.commenter}}</p>
+                                            <div class="card">
+                                                <div class="card-header w-100 text-center">
+                                                    <strong>@{{notification.title}}</strong>
+                                                </div>
+                                                <div class="card-body">
+                                                    @{{notification.text}}
+                                                </div>
+                                                <div class="card-footer w-100">
+                                                    <span class="float-right">By @{{notification.commenter}}</span>
+                                                </div>
+                                            </div>
                                         </div>
                             </li>
 
