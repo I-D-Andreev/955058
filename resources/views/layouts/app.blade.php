@@ -47,9 +47,36 @@
                                 </li>
                             @endif
                         @else
+                            <li class="nav-item dropdown">
+                                <a id="notificationDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    Notifications
+                                    <span class="badge badge-info">100</span>
+                                </a>
+
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-item">
+                                        <a href="#" >Mark all as read</a>
+                                    </div>
+                                
+                                    <div class="dropdown-divider"></div>
+
+                                    <div class="dropdown-item">
+                                        Hello world 1
+                                    </div>
+
+                                    <div class="dropdown-item">
+                                        Hello world 2
+                                    </div>
+
+                                    <div class="dropdown-item">
+                                        Hello world 3
+                                    </div>
+                            </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('posts.index') }}">{{ __('Main') }}</a>
                             </li>
+                            
 
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
@@ -82,6 +109,16 @@
     <script src="{{ asset('js/app.js') }}"></script>   
     @stack('imports')
     @yield('code')
+
+    <script>
+        var userId = <?php echo Auth::id(); ?>;
+        console.log(`App.User.${userId}`);
+
+        window.Echo.private(`App.User.${userId}`)
+            .notification((notification) => {
+                console.log(notification);
+            });
+    </script>
 
 </body>
 </html>

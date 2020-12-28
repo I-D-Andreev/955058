@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use DB;
 use App\Post;
 use App\Tag;
+use App\User;
+use App\Notifications\NewComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -166,5 +168,12 @@ class PostController extends Controller
             'title' => 'required|max:150',
             'text' => 'required',
         ]);
+    }
+
+
+    // testing
+    public function notifyUser($id){
+        $user = User::findOrFail($id);
+        $user->notify(new NewComment("hello world2222"));
     }
 }
