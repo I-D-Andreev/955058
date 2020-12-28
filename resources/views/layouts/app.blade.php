@@ -65,7 +65,7 @@
                                     <div class="dropdown-divider"></div>
 
                                    <div v-for="notification in notifications">
-                                        <div class="dropdown-item">
+                                        <div class="dropdown-item" @click="redirectToPost(notification.postId)">
                                             <div class="card">
                                                 <div class="card-header w-100 text-center">
                                                     <strong>@{{notification.title}}</strong>
@@ -128,6 +128,11 @@
                 clearNotifications: function(){
                     this.notifications = [];
                 },
+                redirectToPost: function(postId) {
+                    let url = "{{route('posts.show', ['id' => ':id'])}}";
+                    url = url.replace(':id', postId);
+                    location.href = url;
+                }
             },
         });        
 

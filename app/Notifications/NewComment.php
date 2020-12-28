@@ -45,6 +45,7 @@ class NewComment extends Notification implements ShouldQueue
             'title' => $this->reduceString($title),
             'text' => $this->reduceString($this->comment->text),
             'commenter' => $this->reduceString($this->comment->author->name),
+            'postId' => $this->comment->post->id,
         ];
     }
     
