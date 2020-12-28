@@ -66,7 +66,9 @@
 
                                    <div v-for="notification in notifications">
                                         <div class="dropdown-item">
-                                            @{{notification.text}}
+                                            <p>@{{notification.title}}</p>
+                                            <p>@{{notification.text}}</>
+                                            <p>@{{notification.commenter}}</p>
                                         </div>
                             </li>
 

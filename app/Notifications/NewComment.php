@@ -42,7 +42,7 @@ class NewComment extends Notification implements ShouldQueue
         $post = $this->comment->post;
         $title = 'New comment in '.$post->title.'!';
         return [
-            "title" => $this->reduceString($title),
+            'title' => $this->reduceString($title),
             'text' => $this->reduceString($this->comment->text),
             'commenter' => $this->reduceString($this->comment->author->name),
         ];
