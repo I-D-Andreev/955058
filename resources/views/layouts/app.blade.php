@@ -59,7 +59,7 @@
                                 
                                 <div class="dropdown-menu">
                                     <div class="dropdown-item">
-                                        <a href="#" class="w-100 text-center">Mark all as read</a>
+                                        <a href="#" class="w-100 text-center" @click="clearNotifications()">Mark all as read</a>
                                     </div>
                                 
                                     <div class="dropdown-divider"></div>
@@ -123,6 +123,11 @@
             el: "#app",
             data: {
                 notifications:[],
+            },
+            methods: {
+                clearNotifications: function(){
+                    this.notifications = [];
+                },
             },
         });        
 
