@@ -14,8 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('comments/notifyNew', 'CommentController@apiNotifyNewComment')->name('api.post.comment.new');
-
 Route::get('comments/{id}', 'CommentController@apiComments')->name('api.post.comments');
 Route::post('comments/{id}', 'CommentController@apiCommentCreate')->name('api.post.comment.create');
 Route::put('comments/{id}', 'CommentController@apiCommentUpdate')->name('api.post.comment.update');

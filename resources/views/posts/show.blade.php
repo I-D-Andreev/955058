@@ -118,17 +118,6 @@
                         this.newComment = '';
                         
                         console.log(response.data);
-                        // send a post request to trigger a notification send
-                        axios.post("{{route('api.post.comment.new')}}", 
-                        {
-                            commentId: response.data.id,
-                        },
-                        this.config)
-                        .catch(err => {
-                            console.log("Failed to send notification");
-                            console.log(err);
-                        })
-
                     })
                     .catch(err => {
                         console.log(err);

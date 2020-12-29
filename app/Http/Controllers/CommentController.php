@@ -100,17 +100,24 @@ class CommentController extends Controller
         return Post::findOrFail($post_id)->comments->load('author');
     }
 
+    // authenticated by auth:api
     public function apiCommentCreate($post_id, Request $request){
-
         // todo1: data (text) validation
+
         $token = $request->bearerToken();
+        $commenter = User::where('api_token', $token)->first();
+
+        $post = Post::findOrFail($post_id);
 
         $comment = new Comment;
         $comment->text = $request['text'];
-        $comment->commentable_id = $post_id;
+        $comment->commentable_id = $post->id;
         $comment->commentable_type = Post::class;
-        $comment->user_id = User::where('api_token', $token)->first()->id;
+        $comment->user_id = $commenter->id;
         $comment->save();
+
+        $post->author->notify(new NewComment($comment));
+        
         return $comment->load('author');
     }
 
@@ -134,12 +141,5 @@ class CommentController extends Controller
 
         $comment->save();
         return $comment->load('author');
-    }
-
-    public function apiNotifyNewComment(Request $request){
-        $commentId = $request["commentId"];
-        $comment = Comment::findOrFail($commentId);
-        $postAuthor = $comment->commentable->author;
-        $postAuthor->notify(new NewComment($comment));
     }
 }
