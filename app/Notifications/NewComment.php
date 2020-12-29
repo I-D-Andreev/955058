@@ -3,6 +3,7 @@
 namespace App\Notifications;
 
 use App\Comment;
+use App\Post;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -16,15 +17,17 @@ class NewComment extends Notification implements ShouldQueue
     private $MAX_NOTIFICATION_LENGTH = 35;
 
     public Comment $comment;
+    public Post $post;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Comment $comment)
+    public function __construct(Comment $comment, Post $post)
     {
         $this->comment = $comment;
+        $this->post = $post;
     }
 
     /**
@@ -39,13 +42,12 @@ class NewComment extends Notification implements ShouldQueue
     }
     
     public function toArray($notifiable){
-        $post = $this->comment->commentable;
-        $title = 'New comment in '.$post->title.'!';
+        $title = 'New comment in '.$this->post->title.'!';
         return [
             'title' => $this->reduceString($title),
             'text' => $this->reduceString($this->comment->text),
             'commenter' => $this->reduceString($this->comment->author->name),
-            'postId' => $post->id,
+            'postId' => $this->post->id,
         ];
     }
     
