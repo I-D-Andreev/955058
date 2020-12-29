@@ -20,11 +20,9 @@ class CreateCommentsTable extends Migration
             $table->longText('text');
             $table->boolean('editable_by_user')->default(true);
 
-            $table->unsignedInteger('post_id');
-            $table->foreign('post_id')->references('id')->
-                on('posts')->onDelete('cascade')->onUpdate('cascade');
+            $table->morphs('commentable');
 
-            $table->unsignedInteger('user_id');   
+            $table->unsignedInteger('user_id');
             $table->foreign('user_id')->references('id')->
                 on('users')->onDelete('cascade')->onUpdate('cascade');
 

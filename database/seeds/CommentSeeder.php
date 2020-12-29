@@ -14,10 +14,19 @@ class CommentSeeder extends Seeder
     {
         $comment = new Comment;
         $comment->text = "That's a cool post!";
-        $comment->post_id = 1;
+        $comment->commentable_id = 1;
+        $comment->commentable_type = App\Post::class;
+
         $comment->user_id = 1;
         $comment->save();
 
-        factory(App\Comment::class, 300)->create();
+        // Generate comments in a loop as Comment::count() is not 
+        // dynamically incremented in the factory (i.e. is always 1).
+        // This way Comment::count() will be incremented after every execution of the loop.
+        $totalComments = 300;
+        $loops = 50;
+        for($i=0; $i<$loops; $i++){
+            factory(App\Comment::class, intdiv($totalComments, $loops))->create();
+        }
     }
 }
