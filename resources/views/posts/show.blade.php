@@ -178,8 +178,8 @@
                         this.config
                     )
                     .then(response => {
-                        let ghostCommentIndex = this.comments.findIndex(c => c.id == comment.id);
-                        this.comments[ghostCommentIndex] = response.data;
+                        let commentIndex = this.comments.findIndex(c => c.id == comment.id);
+                        this.comments[commentIndex] = response.data;
                         this.commentToEdit = null;
                     })
                     .catch(err => {
@@ -226,7 +226,6 @@
                         this.config
                     )
                     .then(response => {
-                        console.log('Reply comment success');
                         commentArea.contentEditable = false;
 
                         parentComment.comments.pop();                        
