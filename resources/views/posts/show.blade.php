@@ -48,7 +48,7 @@
                 <h5 class="h5 ml-2">Comments:<span class="badge badge-info float-right mr-2">@{{comments.length}}</span></h5>
             </div>
             <div class="card-body">
-                <ul class="list-group borderless" v-for="comment in comments">                  
+                <ul class="list-group borderless" v-for="comment in comments" v-bind:key="comment.id">                  
                    
                     <div class="list-group-item border-0" >
                         <div class="card">
@@ -70,7 +70,7 @@
 
 
                  
-                    <div class="list-group-item border-0" v-if="comment.comments && comment.comments.length" v-for="subcomment in comment.comments">
+                    <div class="list-group-item border-0" v-if="comment.comments && comment.comments.length" v-for="subcomment in comment.comments" v-bind:key="subcomment.id">
                         <div class="card float-right" style="width:90%">
                                 <div class="card-header">@{{subcomment.author.name}} 
                                     <i v-if="(subcomment.author.id==={{Auth::id()}} && subcomment.editable_by_user==='1') || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(subcomment)"></i>
@@ -232,9 +232,6 @@
                         parentComment.comments.pop();                        
                         parentComment.comments.push(response.data);
                         this.commentToReply = null;
-
-                        // Set the text automatically as vue doubles it.
-                        commentArea.textContent = response.data.text;
                     })
                     .catch(err => {
                         console.log(err);
