@@ -266,7 +266,7 @@
                     })
                 },
                 focusArea: function(commentArea){
-                    // Set editable explicitly so we don't have race condition between vue and the focus line.
+                    // Set editable explicitly so we don't have a race condition between vue and the focus line.
                     // commentToEdit is still needed to automatically get 
                     // the commentAreas back to non-editable once we stop editing.
                     commentArea.contentEditable = true;
