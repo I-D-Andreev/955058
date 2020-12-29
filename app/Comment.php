@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Comment extends Model
 {
+    protected $with = ['author'];
+
     public function commentable(){
         return $this->morphTo();
     }
@@ -17,4 +19,8 @@ class Comment extends Model
     public function comments(){
         return $this->morphMany('App\Comment', 'commentable');
     }
+
+    // public function commentsRecursive(){
+    //     return $this->comments()->with('commentsRecursive');
+    // }
 }

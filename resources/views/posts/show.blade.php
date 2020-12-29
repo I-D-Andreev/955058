@@ -48,25 +48,43 @@
                 <h5 class="h5 ml-2">Comments:<span class="badge badge-info float-right mr-2">@{{comments.length}}</span></h5>
             </div>
             <div class="card-body">
-                <ul class="list-group borderless">
-                    <div class="list-group-item border-0" v-for="(comment, index) in comments">
-                        
+                <ul class="list-group borderless" v-for="comment in comments">
+                    <div class="list-group-item border-0" >
                         <div class="card">
                             <div class="card-header">@{{comment.author.name}} 
-                                <i v-if="(comment.author.id==={{Auth::id()}} && comment.editable_by_user==='1') || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(comment, index)"></i>
+                                <i v-if="(comment.author.id==={{Auth::id()}} && comment.editable_by_user==='1') || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(comment)"></i>
                                 <span class="float-right">@{{comment.updated_at | formatDate}}</span>
                                 <span v-if="comment.created_at != comment.updated_at" class="float-right mr-3">
                                     <i v-if="comment.editable_by_user==='1'">(Edited)</i>
                                     <i v-else class="text-danger">(Moderated by Admin)</i>
                                 </span>
                             </div>
-                            <div :contenteditable="(commentToEdit === comment.id) ? true: false" class="card-body" name="commentArea">@{{comment.text}}</div>
+                            <div v-bind:id="'commentArea' + comment.id" :contenteditable="(commentToEdit === comment.id) ? true: false" class="card-body">@{{comment.text}}</div>
                         </div>
                         <div v-if="(commentToEdit === comment.id)" class="w-100">
-                            <button class="btn btn-primary float-right mt-1" @click="editComment(comment, index)">Edit Comment</button>
+                            <button class="btn btn-primary float-right mt-1" @click="editComment(comment)">Edit Comment</button>
                         </div>
                     </div>
-            </ul> 
+
+
+                    <div class="list-group-item border-0" v-for="subcomment in comment.comments">
+                        <div class="card float-right" style="width:90%">
+                            <div class="card-header">@{{subcomment.author.name}} 
+                                <i v-if="(subcomment.author.id==={{Auth::id()}} && subcomment.editable_by_user==='1') || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(subcomment)"></i>
+                                <span class="float-right">@{{subcomment.updated_at | formatDate}}</span>
+                                <span v-if="subcomment.created_at != subcomment.updated_at" class="float-right mr-3">
+                                    <i v-if="subcomment.editable_by_user==='1'">(Edited)</i>
+                                    <i v-else class="text-danger">(Moderated by Admin)</i>
+                                </span>
+                            </div>
+                            <div v-bind:id="'commentArea' + subcomment.id" :contenteditable="(commentToEdit === subcomment.id) ? true: false" class="card-body">@{{subcomment.text}}</div>
+                        </div>
+                        <div v-if="(commentToEdit === subcomment.id)" class="w-100">
+                            <button class="btn btn-primary float-right mt-1" @click="editComment(subcomment)">Edit Comment</button>
+                        </div>
+                    </div>
+
+                </ul> 
             </div>
         </div>
 
@@ -123,14 +141,15 @@
                         console.log(err);
                     })
                 }, 
-                commentEditArea: function(comment, commentAreaIndex){  
+                commentEditArea: function(comment){ 
+                     
                     this.commentToEdit = comment.id;
-                    let commentArea = document.getElementsByName("commentArea")[commentAreaIndex]
-                    
+                    let areaId = "commentArea" + comment.id;
+                    let commentArea = document.getElementById(areaId)
+
                     // Set editable explicitly so we don't have race condition between vue and the focus line.
                     // commentToEdit is still needed to automatically get 
                     // the commentAreas back to non-editable once we stop editing.
-
                     commentArea.contentEditable = true;
                     commentArea.focus();
 
@@ -139,8 +158,9 @@
                     document.getSelection().collapseToEnd();
 
                 },
-                editComment: function(comment, commentAreaIndex){
-                    let commentArea = document.getElementsByName("commentArea")[commentAreaIndex]
+                editComment: function(comment){
+                    let areaId = "commentArea" + comment.id;
+                    let commentArea = document.getElementById(areaId)
                     let url = "{{ route('api.post.comment.update', ['id' => ':id']) }}";
                     url = url.replace(':id', comment.id);
                    
@@ -151,8 +171,9 @@
                         this.config
                     )
                     .then(response => {
-                        this.comments[commentAreaIndex] = response.data;
-                        this.commentToEdit = '';
+                        let commentIndex = this.comments.findIndex(c => c.id == comment.id);
+                        this.comments[commentIndex] = response.data;
+                        this.commentToEdit = null;
                     })
                     .catch(err => {
                         console.log(err);
@@ -163,6 +184,9 @@
             mounted() {
                 axios.get("{{ route('api.post.comments', ['id' => $post->id])}}", this.config)
                 .then(response => {
+                    console.log('Comments response!!');
+                    console.log(response);
+                    console.log(response.data.comments);
                     this.comments = response.data;
                 })
                 .catch(err => {

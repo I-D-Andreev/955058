@@ -97,7 +97,7 @@ class CommentController extends Controller
     }
 
     public function apiComments($post_id){
-        return Post::findOrFail($post_id)->comments->load('author');
+        return Post::findOrFail($post_id)->comments->load('comments');
     }
 
     // authenticated by auth:api
