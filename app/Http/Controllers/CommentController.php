@@ -107,7 +107,8 @@ class CommentController extends Controller
 
         $comment = new Comment;
         $comment->text = $request['text'];
-        $comment->post_id = $post_id;
+        $comment->commentable_id = $post_id;
+        $comment->commentable_type = Post::class;
         $comment->user_id = User::where('api_token', $token)->first()->id;
         $comment->save();
         return $comment->load('author');
@@ -138,7 +139,7 @@ class CommentController extends Controller
     public function apiNotifyNewComment(Request $request){
         $commentId = $request["commentId"];
         $comment = Comment::findOrFail($commentId);
-        $postAuthor = $comment->post->author;
+        $postAuthor = $comment->commentable->author;
         $postAuthor->notify(new NewComment($comment));
     }
 }

@@ -75,7 +75,7 @@
             <h5 class="card-header">Leave a Comment:</h5>
             <div class="card-body">
                 <textarea class="form-control" rows="3" style="resize: none" v-model="newComment"></textarea>
-                <button @click="createComment" class="btn btn-primary float-right mt-3">Submit</button>
+                <button @click="createCommentToPost" class="btn btn-primary float-right mt-3">Submit</button>
             </div>
         </div> 
     </div>
@@ -106,7 +106,7 @@
                 commentToEdit: null,
             },
             methods: {
-                createComment: function(){
+                createCommentToPost: function(){
                     axios.post("{{ route('api.post.comment.create', ['id' => $post->id]) }}",
                         {
                             text: this.newComment
@@ -116,11 +116,12 @@
                     .then(response => {
                         this.comments.push(response.data);
                         this.newComment = '';
-
+                        
+                        console.log(response.data);
                         // send a post request to trigger a notification send
                         axios.post("{{route('api.post.comment.new')}}", 
                         {
-                            commentId: response.data.id
+                            commentId: response.data.id,
                         },
                         this.config)
                         .catch(err => {

@@ -39,13 +39,13 @@ class NewComment extends Notification implements ShouldQueue
     }
     
     public function toArray($notifiable){
-        $post = $this->comment->post;
+        $post = $this->comment->commentable;
         $title = 'New comment in '.$post->title.'!';
         return [
             'title' => $this->reduceString($title),
             'text' => $this->reduceString($this->comment->text),
             'commenter' => $this->reduceString($this->comment->author->name),
-            'postId' => $this->comment->post->id,
+            'postId' => $post->id,
         ];
     }
     
