@@ -48,11 +48,11 @@
                 <h5 class="h5 ml-2">Comments:<span class="badge badge-info float-right mr-2">@{{comments.length}}</span></h5>
             </div>
             <div class="card-body">
-                <ul class="list-group borderless" v-for="comment in comments">
+                <ul class="list-group borderless" v-for="comment in comments">                  
                     <div class="list-group-item border-0" >
                         <div class="card">
-                            <div class="card-header">@{{comment.author.name}} 
-                                <i v-if="(comment.author.id==={{Auth::id()}} && comment.editable_by_user==='1') || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(comment)"></i>
+                            <div class="card-header">@{{comment.author.name}}
+                                <i v-if="(comment.author.id=={{Auth::id()}} && comment.editable_by_user=='1') || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(comment)"></i>
                                 <span class="float-right">@{{comment.updated_at | formatDate}}</span>
                                 <span v-if="comment.created_at != comment.updated_at" class="float-right mr-3">
                                     <i v-if="comment.editable_by_user==='1'">(Edited)</i>
@@ -67,22 +67,22 @@
                     </div>
 
 
-                    <div class="list-group-item border-0" v-for="subcomment in comment.comments">
-                        <div class="card float-right" style="width:90%">
-                            <div class="card-header">@{{subcomment.author.name}} 
-                                <i v-if="(subcomment.author.id==={{Auth::id()}} && subcomment.editable_by_user==='1') || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(subcomment)"></i>
-                                <span class="float-right">@{{subcomment.updated_at | formatDate}}</span>
-                                <span v-if="subcomment.created_at != subcomment.updated_at" class="float-right mr-3">
-                                    <i v-if="subcomment.editable_by_user==='1'">(Edited)</i>
-                                    <i v-else class="text-danger">(Moderated by Admin)</i>
-                                </span>
+                        <div class="list-group-item border-0" v-if="comment.comments && comment.comments.length" v-for="subcomment in comment.comments">
+                            <div class="card float-right" style="width:90%">
+                                <div class="card-header">@{{subcomment.author.name}} 
+                                    <i v-if="(subcomment.author.id==={{Auth::id()}} && subcomment.editable_by_user==='1') || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(subcomment)"></i>
+                                    <span class="float-right">@{{subcomment.updated_at | formatDate}}</span>
+                                    <span v-if="subcomment.created_at != subcomment.updated_at" class="float-right mr-3">
+                                        <i v-if="subcomment.editable_by_user==='1'">(Edited)</i>
+                                        <i v-else class="text-danger">(Moderated by Admin)</i>
+                                    </span>
+                                </div>
+                                <div v-bind:id="'commentArea' + subcomment.id" :contenteditable="(commentToEdit === subcomment.id) ? true: false" class="card-body">@{{subcomment.text}}</div>
                             </div>
-                            <div v-bind:id="'commentArea' + subcomment.id" :contenteditable="(commentToEdit === subcomment.id) ? true: false" class="card-body">@{{subcomment.text}}</div>
+                            <div v-if="(commentToEdit === subcomment.id)" class="w-100">
+                                <button class="btn btn-primary float-right mt-1" @click="editComment(subcomment)">Edit Comment</button>
+                            </div>
                         </div>
-                        <div v-if="(commentToEdit === subcomment.id)" class="w-100">
-                            <button class="btn btn-primary float-right mt-1" @click="editComment(subcomment)">Edit Comment</button>
-                        </div>
-                    </div>
 
                 </ul> 
             </div>

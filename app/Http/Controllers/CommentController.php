@@ -114,6 +114,7 @@ class CommentController extends Controller
         $comment->commentable_id = $post->id;
         $comment->commentable_type = Post::class;
         $comment->user_id = $commenter->id;
+        $comment->editable_by_user = true;
         $comment->save();
 
         if($post->author->id != $commenter->id){
