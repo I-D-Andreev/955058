@@ -53,6 +53,7 @@
                         <div class="card">
                             <div class="card-header">@{{comment.author.name}}
                                 <i v-if="(comment.author.id=={{Auth::id()}} && comment.editable_by_user=='1') || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(comment)"></i>
+                                <i class="far fa-comment-dots ml-1"></i>
                                 <span class="float-right">@{{comment.updated_at | formatDate}}</span>
                                 <span v-if="comment.created_at != comment.updated_at" class="float-right mr-3">
                                     <i v-if="comment.editable_by_user==='1'">(Edited)</i>
