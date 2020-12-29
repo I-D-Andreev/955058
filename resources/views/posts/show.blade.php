@@ -83,7 +83,7 @@
                                 <div v-bind:id="'commentArea' + subcomment.id" :contenteditable="(commentToEdit === subcomment.id) ? true: false" class="card-body">@{{subcomment.text}}</div>
                             </div>
                             <div v-if="(commentToEdit === subcomment.id)" class="w-100">
-                                <button class="btn btn-primary float-right mt-1" @click="editComment(subcomment)">Edit Comment</button>
+                                <button class="btn btn-primary float-right mt-1" @click="editSubComment(comment,subcomment)">Edit Comment</button>
                             </div>
 
                             <div v-if="(commentToReply === subcomment.id)" class="w-100">
@@ -178,9 +178,14 @@
                         this.config
                     )
                     .then(response => {
-                        let commentIndex = this.comments.findIndex(c => c.id == comment.id);
-                        this.comments[commentIndex] = response.data;
+                                               let commentIndex = this.comments.findIndex(c => c.id == comment.id);
                         this.commentToEdit = null;
+
+                        // Change modifiable properties one by one so that subcomments are not re-rendered
+                        this.comments[commentIndex].text = response.data.text;
+                        this.comments[commentIndex].created_at = response.data.created_at;
+                        this.comments[commentIndex].updated_at = response.data.updated_at;
+                        this.comments[commentIndex].editable_by_user = response.data.editable_by_user;
                     })
                     .catch(err => {
                         console.log(err);
@@ -237,6 +242,28 @@
                     })
 
 
+                },
+                editSubComment: function(parentComment, comment){
+                    let areaId = "commentArea" + comment.id;
+                    let commentArea = document.getElementById(areaId)
+                    let url = "{{ route('api.post.comment.update', ['id' => ':id']) }}";
+                    url = url.replace(':id', comment.id);
+                   
+                    axios.put(url,
+                        {
+                            text: commentArea.textContent
+                        }, 
+                        this.config
+                    )
+                    .then(response => {
+                        this.commentToEdit = null;
+                        let commentIndex = parentComment.comments.findIndex(c => c.id == comment.id);
+
+                        parentComment.comments[commentIndex] = response.data;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
                 },
                 focusArea: function(commentArea){
                     // Set editable explicitly so we don't have race condition between vue and the focus line.
