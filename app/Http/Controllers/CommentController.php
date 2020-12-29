@@ -116,7 +116,9 @@ class CommentController extends Controller
         $comment->user_id = $commenter->id;
         $comment->save();
 
-        $post->author->notify(new NewComment($comment));
+        if($post->author->id != $commenter->id){
+            $post->author->notify(new NewComment($comment));
+        }
         
         return $comment->load('author');
     }
