@@ -103,18 +103,30 @@ class CommentController extends Controller
     // authenticated by auth:api
     public function apiCommentCreate($post_id, Request $request){
         // todo1: data (text) validation
-
         $token = $request->bearerToken();
         $commenter = User::where('api_token', $token)->first();
 
         $post = Post::findOrFail($post_id);
 
+        $commentableId = 0;
+        $commentableType = '';
+
+        if(strtolower($request['commentableType']) == 'comment'){
+            $commentableId = Comment::findOrFail(intval($request['commentableId']))->id;
+            $commentableType = Comment::class;
+        } else {
+            $commentableId = $post->id;
+            $commentableType = Post::class;
+        }
+
         $comment = new Comment;
         $comment->text = $request['text'];
-        $comment->commentable_id = $post->id;
-        $comment->commentable_type = Post::class;
+        $comment->commentable_id = $commentableId;
+        $comment->commentable_type = $commentableType;
         $comment->user_id = $commenter->id;
-        $comment->editable_by_user = true;
+        // Set to '1' as this is how laravel saves booleans in the database.
+        // Otherwise, the frontend sometimes receives true and sometimes '1'.
+        $comment->editable_by_user = '1';
         $comment->save();
 
         if($post->author->id != $commenter->id){

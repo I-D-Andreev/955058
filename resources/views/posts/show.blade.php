@@ -49,11 +49,12 @@
             </div>
             <div class="card-body">
                 <ul class="list-group borderless" v-for="comment in comments">                  
+                   
                     <div class="list-group-item border-0" >
                         <div class="card">
                             <div class="card-header">@{{comment.author.name}}
                                 <i v-if="(comment.author.id=={{Auth::id()}} && comment.editable_by_user=='1') || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(comment)"></i>
-                                <i class="far fa-comment-dots ml-1"></i>
+                                <i v-if="canReply" class="far fa-comment-dots ml-1" @click="commentReplyArea(comment)"></i>
                                 <span class="float-right">@{{comment.updated_at | formatDate}}</span>
                                 <span v-if="comment.created_at != comment.updated_at" class="float-right mr-3">
                                     <i v-if="comment.editable_by_user==='1'">(Edited)</i>
@@ -68,13 +69,14 @@
                     </div>
 
 
-                        <div class="list-group-item border-0" v-if="comment.comments && comment.comments.length" v-for="subcomment in comment.comments">
-                            <div class="card float-right" style="width:90%">
+                 
+                    <div class="list-group-item border-0" v-if="comment.comments && comment.comments.length" v-for="subcomment in comment.comments">
+                        <div class="card float-right" style="width:90%">
                                 <div class="card-header">@{{subcomment.author.name}} 
                                     <i v-if="(subcomment.author.id==={{Auth::id()}} && subcomment.editable_by_user==='1') || '{{Auth::user()->type}}'=='admin'" class="far fa-edit ml-2" @click="commentEditArea(subcomment)"></i>
                                     <span class="float-right">@{{subcomment.updated_at | formatDate}}</span>
                                     <span v-if="subcomment.created_at != subcomment.updated_at" class="float-right mr-3">
-                                        <i v-if="subcomment.editable_by_user==='1'">(Edited)</i>
+                                        <i v-if="subcomment.editable_by_user=='1'">(Edited)</i>
                                         <i v-else class="text-danger">(Moderated by Admin)</i>
                                     </span>
                                 </div>
@@ -83,7 +85,12 @@
                             <div v-if="(commentToEdit === subcomment.id)" class="w-100">
                                 <button class="btn btn-primary float-right mt-1" @click="editComment(subcomment)">Edit Comment</button>
                             </div>
+
+                            <div v-if="(commentToReply === subcomment.id)" class="w-100">
+                                <button class="btn btn-primary float-right mt-1" @click="createCommentToComment(comment,subcomment)">Submit Comment</button>
+                            </div>
                         </div>
+
 
                 </ul> 
             </div>
@@ -123,16 +130,23 @@
                 comments:[],
                 newComment: '',
                 commentToEdit: null,
+                canReply: true,
+                commentToReply: null
             },
             methods: {
                 createCommentToPost: function(){
                     axios.post("{{ route('api.post.comment.create', ['id' => $post->id]) }}",
                         {
-                            text: this.newComment
+                            text: this.newComment,
+                            commentableId: "<?php echo $post->id; ?>",
+                            commentableType: "post",
                         },
                         this.config
                     )
                     .then(response => {
+                        console.log('Create comment success');
+                        console.log(response.data);
+
                         this.comments.push(response.data);
                         this.newComment = '';
                         
@@ -147,17 +161,9 @@
                     this.commentToEdit = comment.id;
                     let areaId = "commentArea" + comment.id;
                     let commentArea = document.getElementById(areaId)
+                    init.focusArea(commentArea);
 
-                    // Set editable explicitly so we don't have race condition between vue and the focus line.
-                    // commentToEdit is still needed to automatically get 
-                    // the commentAreas back to non-editable once we stop editing.
-                    commentArea.contentEditable = true;
-                    commentArea.focus();
-
-                    // move cursor to the end of the comment
-                    document.execCommand("selectAll", false, null);
-                    document.getSelection().collapseToEnd();
-
+              
                 },
                 editComment: function(comment){
                     let areaId = "commentArea" + comment.id;
@@ -172,14 +178,82 @@
                         this.config
                     )
                     .then(response => {
-                        let commentIndex = this.comments.findIndex(c => c.id == comment.id);
-                        this.comments[commentIndex] = response.data;
+                        let ghostCommentIndex = this.comments.findIndex(c => c.id == comment.id);
+                        this.comments[ghostCommentIndex] = response.data;
                         this.commentToEdit = null;
                     })
                     .catch(err => {
                         console.log(err);
                     })
                 },
+                commentReplyArea: function (comment) {
+                    // Add a comment, which will create a reply area for us
+                    let ghostComment = {
+                        'id': 'Spawned',
+                        'name' : '',
+                        'editable_by_user': '1',
+                        'created_at' : '',
+                        'updated_at' :'',
+                        'author' : {
+                            'id': "<?php echo Auth::user()->id; ?>",
+                            'name': "<?php echo Auth::user()->name; ?>",
+                        }
+                    };
+
+                    if(comment.comments){
+                        comment.comments.push(ghostComment);
+                    } else {
+                        comment.comments = [ghostComment];
+                    }
+                    this.canReply = false;
+
+                    Vue.nextTick().then(function(){
+                        let commentArea = document.getElementById('commentAreaSpawned');
+                        init.commentToReply = ghostComment.id;
+                        init.focusArea(commentArea);
+                    });     
+                },
+                createCommentToComment: function(parentComment, ghostComment){
+                    this.canReply = true;
+
+                    let commentArea = document.getElementById('commentAreaSpawned');
+                    axios.post("{{ route('api.post.comment.create', ['id' => $post->id]) }}",
+                        {
+                            text: commentArea.textContent,
+                            commentableId: parentComment.id,
+                            commentableType: "comment",
+                        },
+                        this.config
+                    )
+                    .then(response => {
+                        console.log('Reply comment success');
+                        commentArea.contentEditable = false;
+
+                        parentComment.comments.pop();                        
+                        parentComment.comments.push(response.data);
+                        this.commentToReply = null;
+
+                        // Set the text automatically as vue doubles it.
+                        commentArea.textContent = response.data.text;
+                    })
+                    .catch(err => {
+                        console.log(err);
+                    })
+
+
+                },
+                focusArea: function(commentArea){
+                    // Set editable explicitly so we don't have race condition between vue and the focus line.
+                    // commentToEdit is still needed to automatically get 
+                    // the commentAreas back to non-editable once we stop editing.
+                    commentArea.contentEditable = true;
+                    commentArea.focus();
+
+                    // move cursor to the end of the comment
+                    document.execCommand("selectAll", false, null);
+                    document.getSelection().collapseToEnd();
+
+                }
 
             },
             mounted() {
@@ -187,7 +261,6 @@
                 .then(response => {
                     console.log('Comments response!!');
                     console.log(response);
-                    console.log(response.data.comments);
                     this.comments = response.data;
                 })
                 .catch(err => {
