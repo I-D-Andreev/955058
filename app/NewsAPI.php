@@ -24,13 +24,14 @@ class NewsAPI {
 
 
     public function getNews(){
+        
         $news = News::firstOrCreate(['id'=>1]);
 
-        $current = new \DateTime();
-        $newsDateTime = new \DateTime($news->updated_at);
+        $current = time();
+        $newsDateTime = strtotime($news->updated_at);
 
-        $diff = $newsDateTime->diff($current);
-        if(strlen($news->json)==0 || $diff->i >= $this->updateIntervalMinutes){
+        $diffSeconds = $current - $newsDateTime;
+        if(strlen($news->json)==0 || $diffSeconds >= ($this->updateIntervalMinutes*60)){
             return json_decode($this->updateNews($news)->json);
         } else {
             return json_decode($news->json);
@@ -45,6 +46,9 @@ class NewsAPI {
         $response = Http::get($this->buildAPICall());
         $news->json = $response->body();
         $news->save();
+
+        // In case the data is the same (and updated_at has not changed), update the updated_at
+        $news->touch();
 
         return $news;
     }
