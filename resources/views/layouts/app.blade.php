@@ -110,7 +110,22 @@
     </div>
 
     <main class="py-4" style="height: 93%">
-        @yield('content')
+        <div class="row w-100">
+            <div class="col-md-3 bg-success">
+                @yield('content-left')
+                    left side
+            </div>
+
+            <div class="col-md-6 bg-danger">
+                @yield('content')
+            </div>
+
+            <div class="col-md-3 bg-info">
+                @yield('content-right')
+                    right side
+            </div>
+        </div>
+
     </main>
 
     <script src="{{ asset('js/app.js') }}"></script>   
