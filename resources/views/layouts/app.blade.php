@@ -113,7 +113,11 @@
         <div class="row w-100">
             <div class="col-md-3">
                 @yield('content-left')
-                {{$newsApi->getNews()}}
+                <ul>
+                    @foreach ($newsApi->getNews()->articles as $article)
+                        <li>{{$article->title}}</li>
+                    @endforeach
+                </ul>
             </div>
 
             <div class="col-md-6">
