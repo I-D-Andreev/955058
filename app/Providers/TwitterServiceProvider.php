@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
 use App\Twitter;
 
 class TwitterServiceProvider extends ServiceProvider
@@ -24,8 +25,10 @@ class TwitterServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(Twitter $twitter)
     {
-        //
+        View::composer('layouts.app', function($view) use($twitter) {
+            $view->with('twitter', $twitter);
+        });
     }
 }

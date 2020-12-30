@@ -78,10 +78,8 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id, Twitter $twitter)
+    public function show($id)
     {
-        // $twitter->tweet();
-
         $post = Post::findOrFail($id);
         return view('posts.show', ['post' => $post]);
     }

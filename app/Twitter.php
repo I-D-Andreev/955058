@@ -9,6 +9,6 @@ class Twitter {
     }
 
     public function tweet(){
-        dd("Hello world11");
+        return "Hello world111";
     }
 }

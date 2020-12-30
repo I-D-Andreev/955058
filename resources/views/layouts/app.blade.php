@@ -27,6 +27,9 @@
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
                 </a>
+                <a>
+                    {{-- {{$twitter->tweet()}} --}}
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -111,18 +114,16 @@
 
     <main class="py-4" style="height: 93%">
         <div class="row w-100">
-            <div class="col-md-3 bg-success">
+            <div class="col-md-3">
                 @yield('content-left')
-                    left side
             </div>
 
-            <div class="col-md-6 bg-danger">
+            <div class="col-md-6">
                 @yield('content')
             </div>
 
-            <div class="col-md-3 bg-info">
+            <div class="col-md-3">
                 @yield('content-right')
-                    right side
             </div>
         </div>
 
