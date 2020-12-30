@@ -113,11 +113,29 @@
         <div class="row w-100">
             <div class="col-md-3">
                 @yield('content-left')
-                <ul>
+                <div class="container">
+                    <div>
+                        <h2>Latest News:</h2>
+                    </div>
                     @foreach ($newsApi->getNews()->articles as $article)
-                        <li>{{$article->title}}</li>
+                        <div class="card mb-3" onclick="location.href='{{$article->url}}'">
+                            <div class="card-header text-center">
+                                {{$article->source->name}}
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4 d-none d-lg-block">
+                                        <img class="img-fluid" src={{$article->urlToImage}} alt="Article Thumbnail">
+                                    </div>
+                                    <div class="col-md-8">
+                                        {{$article->title}}
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
                     @endforeach
-                </ul>
+                </div>
             </div>
 
             <div class="col-md-6">

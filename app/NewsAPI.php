@@ -16,7 +16,7 @@ class NewsAPI {
     public function __construct(){
         $this->newsSite = 'http://newsapi.org/v2/top-headlines?';
         $this->apiKey = env('NEWS_API_KEY');
-        $this->pageSize = 5;
+        $this->pageSize = 3;
         $this->country = 'gb';
 
         $this->updateIntervalMinutes = 20;
