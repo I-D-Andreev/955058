@@ -10,8 +10,6 @@ use App\Notifications\NewComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-use App\Twitter;
-
 class PostController extends Controller
 {
     /**

@@ -113,7 +113,7 @@
         <div class="row w-100">
             <div class="col-md-3">
                 @yield('content-left')
-                {{$twitter->tweet()}}
+                {{$newsApi->getNews()}}
             </div>
 
             <div class="col-md-6">

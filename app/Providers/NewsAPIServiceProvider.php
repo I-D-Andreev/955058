@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use App\Twitter;
+use App\NewsAPI;
 
-class TwitterServiceProvider extends ServiceProvider
+class NewsAPIServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
@@ -15,8 +15,8 @@ class TwitterServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Twitter::class, function($app){
-            return new Twitter();
+        $this->app->singleton(NewsAPI::class, function($app){
+            return new NewsAPI();
         });
     }
 
@@ -25,10 +25,10 @@ class TwitterServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot(Twitter $twitter)
+    public function boot(NewsAPI $newsApi)
     {
-        View::composer('layouts.app', function($view) use($twitter) {
-            $view->with('twitter', $twitter);
+        View::composer('layouts.app', function($view) use($newsApi) {
+            $view->with('newsApi', $newsApi);
         });
     }
 }
