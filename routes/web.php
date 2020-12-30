@@ -13,6 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+use App\Twitter;
+
+app()->singleton('twitter', function($app){
+    return new Twitter();
+});
+
+
 Route::any('/', function(){
     return redirect()->route('posts.index');
 });

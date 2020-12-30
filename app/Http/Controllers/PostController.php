@@ -10,6 +10,8 @@ use App\Notifications\NewComment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Twitter;
+
 class PostController extends Controller
 {
     /**
@@ -76,8 +78,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Twitter $twitter)
     {
+        // $twitter->tweet();
+
         $post = Post::findOrFail($id);
         return view('posts.show', ['post' => $post]);
     }
