@@ -82,7 +82,7 @@
     <main class="py-4" style="height: 93%">
         <div class="row w-100">
             <div class="col-md-3">
-                <div class="container">
+                <div class="container ml-1">
                     <div>
                         <h2>Latest News:</h2>
                     </div>
