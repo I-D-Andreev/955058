@@ -24,7 +24,7 @@ class NewsAPI {
 
 
     public function getNews(){
-        $news = News::findOrFail(1);
+        $news = News::firstOrCreate(['id'=>1]);
 
         $current = new \DateTime();
         $newsDateTime = new \DateTime($news->updated_at);
