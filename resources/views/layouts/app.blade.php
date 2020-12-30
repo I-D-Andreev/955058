@@ -87,9 +87,10 @@
                         <h2>Latest News:</h2>
                     </div>
                     @foreach ($newsApi->getNews()->articles as $article)
-                        <div class="card mb-3" onclick="location.href='{{$article->url}}'">
+                        <div class="card mb-3">
                             <div class="card-header text-center">
-                                {{$article->source->name}}
+                                <a href="{{$article->url}}" class="float-left">Visit</a>
+                                <span>{{$article->source->name}}</span>
                             </div>
                             <div class="card-body">
                                 <div class="row">
