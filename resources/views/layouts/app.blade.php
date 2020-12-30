@@ -16,10 +16,11 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/colours.css') }}" rel="stylesheet">
 
 </head>
 <body>
-    <div id="app">
+    <div>
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             
             <div class="container">
@@ -49,37 +50,6 @@
                                 </li>
                             @endif
                         @else
-                      
-                            <li class="nav-item dropdown">
-
-                                <div class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Notifications
-                                    <span class="badge badge-info">@{{notifications.length}}</span>
-                                </div>
-                                
-                                <div class="dropdown-menu">
-                                    <div class="dropdown-item">
-                                        <a href="#" class="w-100 text-center" @click="clearNotifications()">Mark all as read</a>
-                                    </div>
-                                
-                                    <div class="dropdown-divider"></div>
-
-                                   <div v-for="notification in notifications">
-                                        <div class="dropdown-item" @click="redirectToPost(notification.postId)">
-                                            <div class="card">
-                                                <div class="card-header w-100 text-center">
-                                                    <strong>@{{notification.title}}</strong>
-                                                </div>
-                                                <div class="card-body">
-                                                    @{{notification.text}}
-                                                </div>
-                                                <div class="card-footer w-100">
-                                                    <span class="float-right">By @{{notification.commenter}}</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                            </li>
-
                             <li class="nav-item">
                                 <a class="nav-link" href="{{ route('posts.index') }}">{{ __('Main') }}</a>
                             </li>
@@ -112,7 +82,6 @@
     <main class="py-4" style="height: 93%">
         <div class="row w-100">
             <div class="col-md-3">
-                @yield('content-left')
                 <div class="container">
                     <div>
                         <h2>Latest News:</h2>
@@ -142,28 +111,37 @@
                 @yield('content')
             </div>
 
-            <div class="col-md-3">
-                @yield('content-right')
+            <div id="notif" class="col-md-3">
+                <ul class="list-group borderless bg-transparent" v-for="notification in notifications"> 
+                     {{-- Do not show initially as unrendered cards are displayed briefly on page load.  --}}
+                    <div class="list-group-item border-0 bg-transparent" v-bind:id="notification.id" style="display:none">                
+                        <div class="card w-75 m-auto">
+                            <div class="card-header text-center bg-light-green">@{{notification.title}}</div>
+                            <div class="card-body text-center">@{{notification.text}}</div>
+                            <div class="card-footer w-100 bg-light-green">
+                                <a href="#" @click="redirectToPost(notification.postId)">Visit</a>
+                                <span class="float-right">By @{{notification.commenter}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </ul>
             </div>
+        
         </div>
-
     </main>
 
     <script src="{{ asset('js/app.js') }}"></script>   
     @stack('imports')
 
     <script>
-        var userId = <?php echo Auth::id(); ?>;
+        var userId = '<?php echo Auth::id(); ?>';
         
         var vapp = new Vue({
-            el: "#app",
+            el: "#notif",
             data: {
-                notifications:[],
+                notifications: [],
             },
             methods: {
-                clearNotifications: function(){
-                    this.notifications = [];
-                },
                 redirectToPost: function(postId) {
                     let url = "{{route('posts.show', ['id' => ':id'])}}";
                     url = url.replace(':id', postId);
@@ -176,6 +154,13 @@
             .notification((notification) => {
                 console.log(notification);
                 vapp.notifications.push(notification);
+
+                Vue.nextTick().then(function(){
+                    let elementId = '#' + notification.id;
+                    $(elementId).css("display", "block");
+                    $(elementId).delay(5000).fadeOut();
+                });  
+
             });
     </script>
 
