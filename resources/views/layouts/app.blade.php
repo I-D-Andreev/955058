@@ -113,7 +113,7 @@
             </div>
 
             <div id="notif" class="col-md-3">
-                <ul class="list-group borderless bg-transparent" v-for="notification in notifications"> 
+                <ul class="list-group borderless sticky-top bg-transparent" v-for="notification in notifications"> 
                      {{-- Do not show initially as unrendered cards are displayed briefly on page load.  --}}
                     <div class="list-group-item border-0 bg-transparent" v-bind:id="notification.id" style="display:none">                
                         <div class="card w-75 m-auto">
