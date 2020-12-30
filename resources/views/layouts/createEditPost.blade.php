@@ -52,7 +52,7 @@
         </div>
 
         <div class="form-group row h-50">
-                <div id="ckeditParent" class="col-md-6 offset-md-3" style="height: 400px">
+                <div id="ckeditParent" class="col-md-10 offset-md-1">
                     <textarea id="text" name="text" class="@error('text') is-invalid @enderror">@yield("text")</textarea>
                     
                     @error('text')
