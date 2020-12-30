@@ -135,7 +135,7 @@
     @stack('imports')
 
     <script>
-        var userId = '<?php echo Auth::id(); ?>';
+        var userId = "{{Auth::id()}}";
         
         var vapp = new Vue({
             el: "#notif",
