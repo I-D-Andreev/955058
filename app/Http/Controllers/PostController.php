@@ -149,10 +149,10 @@ class PostController extends Controller
             $request->file('upload')->move(public_path($saveFolder), $safeFileName);
 
 
-            $CKEditorFuncNum = $request->input('CKEditorFuncNum');
+            $callback = $request->input('CKEditorFuncNum');
             $url = asset($saveFolder.'/'.$safeFileName); 
 
-            echo "<script> window.parent.CKEDITOR.tools.callFunction($CKEditorFuncNum, '$url')</script>";
+            echo "<script> window.parent.CKEDITOR.tools.callFunction($callback, '$url')</script>";
         }
     }
 
