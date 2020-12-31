@@ -99,7 +99,9 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-4 d-none d-lg-block">
-                                        <img class="img-fluid" src={{$article->urlToImage}} alt="Article Thumbnail">
+                                        @if($article->urlToImage!=null)
+                                            <img class="img-fluid" src={{$article->urlToImage}} alt="Article Thumbnail">
+                                        @endif
                                     </div>
                                     <div class="col-md-8">
                                         {{$article->title}}
