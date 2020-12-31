@@ -159,7 +159,6 @@
 
         window.Echo.private(`App.User.${userId}`)
             .notification((notification) => {
-                console.log(notification);
                 vapp.notifications.push(notification);
 
                 Vue.nextTick().then(function(){

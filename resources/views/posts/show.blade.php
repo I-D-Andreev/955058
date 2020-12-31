@@ -157,14 +157,11 @@
                         this.config
                     )
                     .then(response => {
-                        console.log('Create comment success');
-                        console.log(response.data);
 
                         this.comments.push(response.data);
                         this.newComment = '';
                         this.commentsCount++;
                         
-                        console.log(response.data);
                     })
                     .catch(err => {
                         console.log(err);
@@ -313,8 +310,6 @@
             mounted() {
                 axios.get("{{ route('api.post.comments', ['id' => $post->id])}}", this.config)
                 .then(response => {
-                    console.log('Comments response!!');
-                    console.log(response);
                     this.comments = response.data;
 
                     let count = this.comments.length;
