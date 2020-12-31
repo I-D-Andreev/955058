@@ -24,6 +24,7 @@ class NewsAPI {
 
 
     public function getNews(){
+        // Update per set interval as there is a maximum limit on API requests per day.
         
         $news = News::firstOrCreate(['id'=>1]);
 
