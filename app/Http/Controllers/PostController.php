@@ -124,17 +124,6 @@ class PostController extends Controller
         return redirect()->route('posts.show', ['id'=>$post->id]);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
     public function uploadImage(Request $request){
         if($request->hasFile('upload')) {
             $saveFolder = "images";
