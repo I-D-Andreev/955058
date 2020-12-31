@@ -18,7 +18,7 @@
 @endsection
 
 @section("buttonName")
-Edit Post
+{{__('Edit Post')}}
 @endsection
 
 @section("preCode")

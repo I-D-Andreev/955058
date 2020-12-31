@@ -14,7 +14,7 @@
 @endsection
 
 @section("buttonName")
-Create Post
+{{__('Create Post')}}
 @endsection
 
 @section("preCode")

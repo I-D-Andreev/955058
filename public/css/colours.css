@@ -5,3 +5,7 @@
 .bg-light-green {
     background-color: rgb(134, 219, 152);
 }
+
+.card-header {
+    background-color: 	#ebebeb;
+}

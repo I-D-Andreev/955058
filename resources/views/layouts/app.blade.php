@@ -100,7 +100,7 @@
                                 <div class="row">
                                     <div class="col-md-4 d-none d-lg-block">
                                         @if($article->urlToImage!=null)
-                                            <img class="img-fluid" src={{$article->urlToImage}} alt="Article Thumbnail">
+                                            <img class="img-fluid" src={{$article->urlToImage}} alt={{$article->title}}>
                                         @endif
                                     </div>
                                     <div class="col-md-8">
@@ -127,7 +127,7 @@
                             <div class="card-body text-center">@{{notification.text}}</div>
                             <div class="card-footer w-100 bg-light-green">
                                 <a href="#" @click="redirectToPost(notification.postId)">Visit</a>
-                                <span class="float-right">By @{{notification.commenter}}</span>
+                                <span class="float-right">{{__('By')}} @{{notification.commenter}}</span>
                             </div>
                         </div>
                     </div>
