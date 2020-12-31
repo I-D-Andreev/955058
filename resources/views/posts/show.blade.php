@@ -66,6 +66,9 @@
                         <div v-if="(commentToEdit === comment.id)" class="w-100">
                             <button class="btn btn-primary float-right mt-1" @click="editComment(comment)">Edit Comment</button>
                         </div>
+                        <div v-if="(commentToEdit === comment.id)" class="w-100">
+                            <button class="btn btn-primary float-right mt-1 mr-2" @click="cancelEdit(comment)">Cancel</button>
+                        </div>
                     </div>
 
 
@@ -168,7 +171,7 @@
                 },
                 editComment: function(comment){
                     let areaId = "commentArea" + comment.id;
-                    let commentArea = document.getElementById(areaId)
+                    let commentArea = document.getElementById(areaId);
                     let url = "{{ route('api.post.comment.update', ['id' => ':id']) }}";
                     url = url.replace(':id', comment.id);
                    
@@ -179,7 +182,7 @@
                         this.config
                     )
                     .then(response => {
-                                               let commentIndex = this.comments.findIndex(c => c.id == comment.id);
+                        let commentIndex = this.comments.findIndex(c => c.id == comment.id);
                         this.commentToEdit = null;
 
                         // Change modifiable properties one by one so that subcomments are not re-rendered
@@ -191,6 +194,13 @@
                     .catch(err => {
                         console.log(err);
                     })
+                },
+                cancelEdit: function(comment){
+                    let areaId = "commentArea" + comment.id;
+                    let commentArea = document.getElementById(areaId);
+                    this.commentToEdit = '';
+                    this.revertArea(commentArea, comment.text);
+
                 },
                 commentReplyArea: function (comment) {
                     // Add a comment, which will create a reply area for us
@@ -277,6 +287,10 @@
                     document.execCommand("selectAll", false, null);
                     document.getSelection().collapseToEnd();
 
+                },
+                revertArea: function(commentArea, previousText){
+                    commentArea.textContent = previousText;
+                    commentArea.contentEditable = false;
                 }
 
             },
