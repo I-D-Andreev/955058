@@ -45,7 +45,7 @@
     <div id="commentsRoot">
         <div class="card p-1 mt-1">
             <div class="card-header">
-                <h5 class="h5 ml-2">Comments:<span class="badge badge-info float-right mr-2">@{{comments.length}}</span></h5>
+                <h5 class="h5 ml-2">Comments:<span class="badge badge-info float-right mr-2">@{{commentsCount}}</span></h5>
             </div>
             <div class="card-body">
                 <ul class="list-group borderless" v-for="comment in comments" v-bind:key="comment.id">                  
@@ -143,7 +143,8 @@
                 newComment: '',
                 commentToEdit: null,
                 canReply: true,
-                commentToReply: null
+                commentToReply: null,
+                commentsCount: 0,
             },
             methods: {
                 createCommentToPost: function(){
@@ -161,6 +162,7 @@
 
                         this.comments.push(response.data);
                         this.newComment = '';
+                        this.commentsCount++;
                         
                         console.log(response.data);
                     })
@@ -255,6 +257,7 @@
                         parentComment.comments.pop();                        
                         parentComment.comments.push(response.data);
                         this.commentToReply = null;
+                        this.commentsCount++;
                     })
                     .catch(err => {
                         console.log(err);
@@ -313,6 +316,14 @@
                     console.log('Comments response!!');
                     console.log(response);
                     this.comments = response.data;
+
+                    let count = this.comments.length;
+
+                    this.comments.forEach((comment)=>{
+                        count+= comment.comments.length;
+                    });
+
+                    this.commentsCount = count;
                 })
                 .catch(err => {
                     console.log(err);
