@@ -19,12 +19,12 @@ class CommentController extends Controller
         $this->middleware('auth:api');
     }
 
-    public function apiComments($post_id){
-        return Post::findOrFail($post_id)->comments->load('comments');
+    public function apiComments($postId){
+        return Post::findOrFail($postId)->comments->load('comments');
     }
 
     // authenticated by auth:api
-    public function apiCommentCreate($post_id, Request $request){
+    public function apiCommentCreate($postId, Request $request){
         $validatedData = $request->validate([
             'text' => 'required',
             'commentableType' => 'required',
@@ -35,7 +35,7 @@ class CommentController extends Controller
         $token = $request->bearerToken();
         $commenter = User::where('api_token', $token)->first();
 
-        $post = Post::findOrFail($post_id);
+        $post = Post::findOrFail($postId);
 
         $commentableId = 0;
         $commentableType = '';
@@ -65,12 +65,12 @@ class CommentController extends Controller
         return $comment->load('author');
     }
 
-    public function apiCommentUpdate($comment_id, Request $request){
+    public function apiCommentUpdate($commentId, Request $request){
         $validatedData = $request->validate([
             'text' => 'required',
         ]);
 
-        $comment = Comment::findOrFail($comment_id);
+        $comment = Comment::findOrFail($commentId);
 
         // being authenticated by the middleware guarantees that said sender exists
         $token = $request->bearerToken();
