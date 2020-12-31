@@ -21,7 +21,7 @@
                 </div>
 
                 <div class="col-md-4">
-                    <button type="button" class="btn btn-primary float-right mr-5" onclick="location.href='{{ route("posts.create")}}'">Create Post</button>
+                    <button type="button" class="btn btn-primary float-right" onclick="location.href='{{ route("posts.create")}}'">Create Post</button>
                 </div>
             </div>
         </div>
