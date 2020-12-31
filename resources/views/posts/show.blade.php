@@ -89,6 +89,10 @@
                                 <button class="btn btn-primary float-right mt-1" @click="editSubComment(comment,subcomment)">Edit Comment</button>
                             </div>
 
+                            <div v-if="(commentToEdit === subcomment.id)" class="w-100">
+                                <button class="btn btn-primary float-right mt-1 mr-2" @click="cancelEdit(subcomment)">Cancel</button>
+                            </div>
+
                             <div v-if="(commentToReply === subcomment.id)" class="w-100">
                                 <button class="btn btn-primary float-right mt-1" @click="createCommentToComment(comment,subcomment)">Submit Comment</button>
                             </div>
