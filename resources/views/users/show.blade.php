@@ -2,18 +2,6 @@
 
 @section("content")
 <div class="container h-100">
-    {{-- <ul class="list-group borderless m-auto">
-        <div class="list-group-item border-0 bg-transparent">
-            <h2 class="text-center">{{$user->name}}</h2>
-        </div>
-
-        <div class="list-group-item border-0 bg-transparent">
-            <span class="h5 bg-info">{{__('Email:')}}  <span class="form-control w-75">  {{$user->email}}</span> </span>
-            
-        </div>
-
-    </ul>
-     --}}
      <div class="row">
          <h2 class="col-md-12 text-center">{{$user->name}}</h2>
     </div>
