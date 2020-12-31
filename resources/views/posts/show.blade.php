@@ -96,6 +96,10 @@
                             <div v-if="(commentToReply === subcomment.id)" class="w-100">
                                 <button class="btn btn-primary float-right mt-1" @click="createCommentToComment(comment,subcomment)">Submit Comment</button>
                             </div>
+
+                            <div v-if="(commentToReply === subcomment.id)" class="w-100">
+                                <button class="btn btn-primary float-right mt-1 mr-2" @click="cancelCreateCommentToComment(comment)">Cancel</button>
+                            </div>
                         </div>
 
 
@@ -257,6 +261,11 @@
                     })
 
 
+                },
+                cancelCreateCommentToComment: function(parentComment){
+                    this.canReply = true;
+                    this.commentToReply = false;
+                    parentComment.comments.pop();
                 },
                 editSubComment: function(parentComment, comment){
                     let areaId = "commentArea" + comment.id;
