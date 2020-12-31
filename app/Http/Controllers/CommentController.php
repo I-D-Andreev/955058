@@ -102,7 +102,13 @@ class CommentController extends Controller
 
     // authenticated by auth:api
     public function apiCommentCreate($post_id, Request $request){
-        // todo1: data (text) validation
+        $validatedData = $request->validate([
+            'text' => 'required',
+            'commentableType' => 'required',
+            'commentableId' => 'required',
+        ]);
+
+        // being authenticated by the middleware guarantees that said commenter exists
         $token = $request->bearerToken();
         $commenter = User::where('api_token', $token)->first();
 
@@ -111,8 +117,8 @@ class CommentController extends Controller
         $commentableId = 0;
         $commentableType = '';
 
-        if(strtolower($request['commentableType']) == 'comment'){
-            $commentableId = Comment::findOrFail(intval($request['commentableId']))->id;
+        if(strtolower($validatedData['commentableType']) == 'comment'){
+            $commentableId = Comment::findOrFail(intval($validatedData['commentableId']))->id;
             $commentableType = Comment::class;
         } else {
             $commentableId = $post->id;
@@ -137,9 +143,13 @@ class CommentController extends Controller
     }
 
     public function apiCommentUpdate($comment_id, Request $request){
-        // todo1: data (text) validation
+        $validatedData = $request->validate([
+            'text' => 'required',
+        ]);
+
         $comment = Comment::findOrFail($comment_id);
 
+        // being authenticated by the middleware guarantees that said sender exists
         $token = $request->bearerToken();
         $sender = User::where('api_token', $token)->first();
 
@@ -147,7 +157,7 @@ class CommentController extends Controller
             abort(403);
         }
 
-        $comment->text = $request['text'];
+        $comment->text = $validatedData['text'];
 
         // A comment modified by an admin will not be changeable by the user anymore.
         if($sender->isAdmin()){
