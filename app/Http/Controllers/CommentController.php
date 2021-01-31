@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Gate;
 
 class CommentController extends Controller
 {
-        /**
+    /**
      * Require authentication to browse posts.
      */
     public function __construct()
